@@ -52,7 +52,9 @@ class Dashboard extends React.Component {
                   <Col xs={7} md={8}>
                     <div className="numbers">
                       <p className="card-category">Discount Voucher</p>
-                      <CardTitle tag="p">3</CardTitle>
+                      <CardTitle tag="p">
+                        {/* {VoucherTable.state.voucher.length} */}
+                      </CardTitle>
                     </div>
                   </Col>
                 </Row>
@@ -83,7 +85,9 @@ class Dashboard extends React.Component {
                   <Col xs={7} md={8}>
                     <div className="numbers">
                       <p className="card-category">Gift Voucher</p>
-                      <CardTitle tag="p">30</CardTitle>
+                      <CardTitle tag="p">
+                        {VoucherTable.voucherNumber}
+                      </CardTitle>
                     </div>
                   </Col>
                 </Row>

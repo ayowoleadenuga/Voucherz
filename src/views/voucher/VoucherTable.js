@@ -13,23 +13,22 @@ import {
 import axios from "axios";
 // import LoadingIndicator from "../../common/LoadingIndicator";
 import ScaleLoader from "react-spinners/ScaleLoader";
+import CustomizedDialogDemo from "./modal";
 
 const override = {
   display: "block",
   margin: "50px 45%",
   borderColor: "red"
 };
-
 class VoucherTable extends React.Component {
   state = {
     voucher: [],
     isLoading: true,
     error: null
   };
-  voucherNumber = this.state.voucher.length;
   componentDidMount() {
     axios
-      .get("http://172.20.20.23:5000/list/SHOPRITE-PROMO?Merchant=Enunwah", {
+      .get("https://172.20.20.23:5001/List/SHOPRITE-PROMO?Merchant=Enunwah", {
         responseType: "json"
       })
       .then(response => {
@@ -40,8 +39,10 @@ class VoucherTable extends React.Component {
         }, []);
         this.setState({
           voucher: voucherDataArr,
-          isLoading: true
+          isLoading: false
         });
+        // eslint-disable-next-line no-console
+        console.log(voucherDataArr);
       })
       .catch(error =>
         this.setState({
@@ -60,7 +61,7 @@ class VoucherTable extends React.Component {
                 <CardTitle tag="h4">Voucher Table</CardTitle>
               </CardHeader>
               <CardBody>
-                <p>*RS: Redemption Status</p>
+                {/* <p>*RS: Redemption Status</p> */}
                 {!this.state.isLoading ? (
                   <Table responsive>
                     <thead className="text-primary">
@@ -72,7 +73,7 @@ class VoucherTable extends React.Component {
                         <th className="text-left">Status</th>
                         <th className="text-left">Date-Created</th>
                         <th className="text-left">Expiry-Date</th>
-                        <th className="text-left">R.S</th>
+                        <th className="text-left">Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -85,7 +86,17 @@ class VoucherTable extends React.Component {
                           <td>{item.status}</td>
                           <td>{item.dateCreated}</td>
                           <td>{item.expiryDate}</td>
-                          <td>{item.redemptionStatus}</td>
+                          <td>
+                            <CustomizedDialogDemo
+                              title={item.voucherCode}
+                              campaignName={item.campaignName}
+                              type={item.type}
+                              status={item.status}
+                              value={item.value}
+                              dateCreated={item.dateCreated}
+                              expiryDate={item.expiryDate}
+                            />
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -106,5 +117,7 @@ class VoucherTable extends React.Component {
     );
   }
 }
+
+// const voucherNumber = VoucherTable.state.voucher.length;
 
 export default VoucherTable;
