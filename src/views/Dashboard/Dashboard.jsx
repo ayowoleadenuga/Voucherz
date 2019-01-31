@@ -14,13 +14,15 @@ class Dashboard extends React.Component {
                 <Row>
                   <Col xs={5} md={4}>
                     <div className="icon-big text-center">
-                      <i className="nc-icon nc-globe text-primary" />
+                      <i className="nc-icon nc-credit-card text-primary" />
                     </div>
                   </Col>
                   <Col xs={7} md={8}>
                     <div className="numbers">
-                      <p className="card-category">Vouchers</p>
-                      <CardTitle tag="p">7</CardTitle>
+                      <p className="card-category">Value Voucher</p>
+                      <CardTitle tag="p">
+                        {VoucherTable.voucherNumber}
+                      </CardTitle>
                     </div>
                   </Col>
                 </Row>
@@ -49,7 +51,7 @@ class Dashboard extends React.Component {
                   </Col>
                   <Col xs={7} md={8}>
                     <div className="numbers">
-                      <p className="card-category">Redeemed Vouchers</p>
+                      <p className="card-category">Discount Voucher</p>
                       <CardTitle tag="p">3</CardTitle>
                     </div>
                   </Col>
@@ -75,12 +77,12 @@ class Dashboard extends React.Component {
                 <Row>
                   <Col xs={5} md={4}>
                     <div className="icon-big text-center">
-                      <i className="nc-icon nc-circle-10 text-primary" />
+                      <i className="nc-icon nc-basket text-primary" />
                     </div>
                   </Col>
                   <Col xs={7} md={8}>
                     <div className="numbers">
-                      <p className="card-category">Customers</p>
+                      <p className="card-category">Gift Voucher</p>
                       <CardTitle tag="p">30</CardTitle>
                     </div>
                   </Col>

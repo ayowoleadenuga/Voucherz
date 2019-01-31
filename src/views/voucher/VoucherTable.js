@@ -11,16 +11,25 @@ import {
 
 // import { thead, tbody } from "./voucherData";
 import axios from "axios";
+// import LoadingIndicator from "../../common/LoadingIndicator";
+import ScaleLoader from "react-spinners/ScaleLoader";
+
+const override = {
+  display: "block",
+  margin: "50px 45%",
+  borderColor: "red"
+};
 
 class VoucherTable extends React.Component {
   state = {
     voucher: [],
-    isLoading: false,
+    isLoading: true,
     error: null
   };
+  voucherNumber = this.state.voucher.length;
   componentDidMount() {
     axios
-      .get("https://172.20.20.23:5001/list/SHOPRITE-PROMO?Merchant=Enunwah", {
+      .get("http://172.20.20.23:5000/list/SHOPRITE-PROMO?Merchant=Enunwah", {
         responseType: "json"
       })
       .then(response => {
@@ -31,7 +40,7 @@ class VoucherTable extends React.Component {
         }, []);
         this.setState({
           voucher: voucherDataArr,
-          isLoading: false
+          isLoading: true
         });
       })
       .catch(error =>
@@ -82,7 +91,12 @@ class VoucherTable extends React.Component {
                     </tbody>
                   </Table>
                 ) : (
-                  <h4>Loading data...</h4>
+                  <ScaleLoader
+                    css={override}
+                    color={"#0bf"}
+                    size={300}
+                    sizeUnit={"px"}
+                  />
                 )}
               </CardBody>
             </Card>

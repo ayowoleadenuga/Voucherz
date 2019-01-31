@@ -18,7 +18,7 @@ import {
   Input
 } from "reactstrap";
 
-import dashboardRoutes from "routes/dashboard.jsx";
+import dashRoutes from "../../routes/dashboard.jsx";
 
 class Header extends React.Component {
   constructor(props) {
@@ -52,7 +52,7 @@ class Header extends React.Component {
   }
   getBrand() {
     var name;
-    dashboardRoutes.map((prop, key) => {
+    dashRoutes.map((prop, key) => {
       if (prop.collapse) {
         prop.views.map((prop, key) => {
           if (prop.path === this.props.location.pathname) {
@@ -159,7 +159,7 @@ class Header extends React.Component {
             </form>
             <Nav navbar>
               <NavItem>
-                <Link to="#pablo" className="nav-link btn-magnify">
+                <Link to="/login" className="nav-link btn-magnify">
                   <i className="nc-icon nc-layout-11" />
                   <p>
                     <span className="d-lg-none d-md-block">Stats</span>
@@ -185,7 +185,7 @@ class Header extends React.Component {
               </Dropdown>
               <NavItem>
                 <Link to="#pablo" className="nav-link btn-rotate">
-                  <i className="nc-icon nc-settings-gear-65" />
+                  <i className="nc-icon nc-button-power" />
                   <p>
                     <span className="d-lg-none d-md-block">Account</span>
                   </p>
