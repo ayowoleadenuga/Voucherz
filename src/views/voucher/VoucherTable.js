@@ -46,7 +46,8 @@ class VoucherTable extends React.Component {
       })
       .catch(error =>
         this.setState({
-          error,
+          ...this.state,
+          error: error,
           isLoading: false
         })
       );
@@ -90,8 +91,9 @@ class VoucherTable extends React.Component {
                             <CustomizedDialogDemo
                               title={item.voucherCode}
                               campaignName={item.campaignName}
-                              type={item.type}
+                              voucherType={item.type}
                               status={item.status}
+                              redemptionStatus={item.redemptionStatus}
                               value={item.value}
                               dateCreated={item.dateCreated}
                               expiryDate={item.expiryDate}

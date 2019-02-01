@@ -55,15 +55,9 @@ const DialogActions = withStyles(theme => ({
   }
 }))(MuiDialogActions);
 
-class CustomizedDialogDemo extends React.Component {
+class AutoDialogDemo extends React.Component {
   state = {
-    open: false
-  };
-
-  handleClickOpen = () => {
-    this.setState({
-      open: true
-    });
+    open: this.props.show
   };
 
   handleClose = () => {
@@ -73,40 +67,31 @@ class CustomizedDialogDemo extends React.Component {
   render() {
     return (
       <div>
-        <Button
+        {/* <Button
           variant="outlined"
           color="primary"
           onClick={this.handleClickOpen}
         >
           More
-        </Button>
+        </Button> */}
         <Dialog
           onClose={this.handleClose}
           aria-labelledby="customized-dialog-title"
           open={this.state.open}
         >
           <DialogTitle id="customized-dialog-title" onClose={this.handleClose}>
-            {this.props.title}
+            Notification
           </DialogTitle>
           <DialogContent>
-            <Typography gutterBottom>
-              Voucher Type: {this.props.voucherType}
-            </Typography>
-            <Typography gutterBottom>
-              Campaign Name: {this.props.campaignName}
-            </Typography>
-            <Typography gutterBottom>
-              Voucher Status: {this.props.status}
-            </Typography>
-            <Typography gutterBottom>
-              Date Created: {this.props.dateCreated}
-            </Typography>
-            <Typography gutterBottom>
-              Expiry Date: {this.props.expiryDate}
-            </Typography>
-            <Typography gutterBottom>
-              Redemption Status: {this.props.redemptionStatus}
-            </Typography>
+            {!this.props.status ? (
+              <Typography gutterBottom>
+                `{this.props.voucherType} has been created successfully`
+              </Typography>
+            ) : (
+              <Typography gutterBottom>
+                An error has occured, please try again.
+              </Typography>
+            )}
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">
@@ -121,14 +106,10 @@ class CustomizedDialogDemo extends React.Component {
     );
   }
 }
-CustomizedDialogDemo.propTypes = {
+AutoDialogDemo.propTypes = {
   voucherType: PropTypes.string,
-  title: PropTypes.string,
-  campaignName: PropTypes.string,
-  status: PropTypes.string,
-  redemptionStatus: PropTypes.string,
-  dateCreated: PropTypes.string,
-  expiryDate: PropTypes.string
+  status: PropTypes.bool,
+  show: PropTypes.bool
 };
 
-export default CustomizedDialogDemo;
+export default AutoDialogDemo;
