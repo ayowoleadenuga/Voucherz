@@ -3,8 +3,9 @@ import { login } from "../../util/APIUtils";
 import "./Login.css";
 import { Link } from "react-router-dom";
 import { ACCESS_TOKEN } from "../../constants";
-
 import { Form, Input, Button, Icon, notification } from "antd";
+import "antd/dist/antd.css";
+
 const FormItem = Form.Item;
 
 class Login extends Component {
@@ -29,12 +30,14 @@ class LoginForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    // eslint-disable-next-line react/prop-types
     this.props.form.validateFields((err, values) => {
       if (!err) {
         const loginRequest = Object.assign({}, values);
         login(loginRequest)
           .then(response => {
             localStorage.setItem(ACCESS_TOKEN, response.accessToken);
+            // eslint-disable-next-line react/prop-types
             this.props.onLogin();
           })
           .catch(error => {

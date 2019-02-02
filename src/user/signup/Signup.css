@@ -1,21 +1,26 @@
 .signup-container {
     max-width: 420px;
     margin: 0 auto;
-    margin-top: 40px;    
+    margin-top: 20px;    
+}
+.page-title {
+    font-size: 30px;
 }
 
 .signup-form-button {
     width: 100%;
-    margin-top: 15px;
+    margin-top: 8px;
 }
-
+.ant-row, .ant-form-item {
+    margin-bottom: 0;
+}
 .signup-form-button[disabled], .signup-form-button[disabled]:hover, .signup-form-button[disabled]:focus {
     opacity: 0.6;
     color: #fff;
-    background-color: #1890ff;
-    border-color: #1890ff;
+    background-color: "#0bf";
+    border-color: "#0bf";
 }
 
 .signup-form input {
-    margin-bottom: 3px;
+    margin-bottom: 5px;
 }
