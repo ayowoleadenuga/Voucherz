@@ -1,7 +1,7 @@
-.signup-container {
+.forgot-container {
     max-width: 420px;
     margin: 0 auto;
-    margin-top: 10px;    
+    margin-top: 150px;  
 }
 .page-title {
     font-size: 30px;
@@ -9,13 +9,13 @@
 
 .signup-form-button {
     width: 100%;
-    margin-top: 6px;
+    margin-top: 8px;
 }
 .ant-form-item {
-    margin-bottom: -14px;
+    margin-bottom: 10px;
 }
 .ant-form-item-label {
-    line-height: 15.9999px;
+    line-height: 17.9999px;
 }
 .signup-form-button[disabled], .signup-form-button[disabled]:hover, .signup-form-button[disabled]:focus {
     opacity: 0.6;
@@ -25,5 +25,5 @@
 }
 
 .signup-form input {
-    margin-bottom: 10px;
+    margin-bottom: 14px;
 }

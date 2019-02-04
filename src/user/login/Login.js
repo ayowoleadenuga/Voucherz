@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { login } from "../../util/APIUtils";
+import "antd/dist/antd.css";
 import "./Login.css";
 import { Link } from "react-router-dom";
 import { ACCESS_TOKEN } from "../../constants";
 import { Form, Input, Button, Icon, notification } from "antd";
-import "antd/dist/antd.css";
 
 const FormItem = Form.Item;
 
@@ -13,7 +13,8 @@ class Login extends Component {
     const AntWrappedLoginForm = Form.create()(LoginForm);
     return (
       <div className="login-container">
-        <h1 className="page-title">Login</h1>
+        <h1>VOUCHERZ</h1>
+        <h2 className="page-title">Login</h2>
         <div className="login-content">
           <AntWrappedLoginForm onLogin={this.props.onLogin} />
         </div>
@@ -45,7 +46,7 @@ class LoginForm extends Component {
               notification.error({
                 message: "Voucherz",
                 description:
-                  "Your Username or Password is incorrect. Please try again!"
+                  "Your Email or Password is incorrect. Please try again!"
               });
             } else {
               notification.error({
@@ -56,6 +57,7 @@ class LoginForm extends Component {
               });
             }
           });
+        console.log(loginRequest);
       }
     });
   }
@@ -66,19 +68,20 @@ class LoginForm extends Component {
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
         <FormItem>
-          {getFieldDecorator("usernameOrEmail", {
+          {getFieldDecorator("email", {
             rules: [
               {
                 required: true,
-                message: "Please input your username or email!"
+                message: "Please input your email!"
               }
             ]
           })(
             <Input
+              id="login-1"
               prefix={<Icon type="user" />}
               size="large"
-              name="usernameOrEmail"
-              placeholder="Username or Email"
+              name="email"
+              placeholder="Email"
             />
           )}
         </FormItem>
@@ -87,6 +90,7 @@ class LoginForm extends Component {
             rules: [{ required: true, message: "Please input your Password!" }]
           })(
             <Input
+              id="login-1"
               prefix={<Icon type="lock" />}
               size="large"
               name="password"
@@ -104,7 +108,10 @@ class LoginForm extends Component {
           >
             Login{" "}
           </Button>
-          Or <Link to="/signup">register now!</Link>
+          <p>
+            <Link to="/forgot">Recover Password?</Link>
+          </p>
+          Or click to <Link to="/signup">Register now!</Link>
         </FormItem>
       </Form>
     );

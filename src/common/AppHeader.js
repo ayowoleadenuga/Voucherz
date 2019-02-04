@@ -77,13 +77,13 @@ function ProfileDropdownMenu(props) {
         <div className="user-full-name-info">
           {props.currentUser.name}
         </div>
-        <div className="username-info">
-          @{props.currentUser.username}
+        <div className="lastname-info">
+          @{props.currentUser.lastname}
         </div>
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item key="profile" className="dropdown-item">
-        <Link to={`/users/${props.currentUser.username}`}>Profile</Link>
+        <Link to={`/users/${props.currentUser.lastname}`}>Profile</Link>
       </Menu.Item>
       <Menu.Item key="logout" className="dropdown-item">
         Logout

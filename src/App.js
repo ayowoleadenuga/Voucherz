@@ -4,6 +4,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 import Login from "./user/login/Login";
 import Signup from "./user/signup/Signup";
 import * as ROUTES from "./routes/base";
+import ForgotPassword from "./user/forgotP";
 
 class App extends Component {
   render() {
@@ -14,6 +15,7 @@ class App extends Component {
             <Route path={ROUTES.LANDING} exact component={Login} />
             <Route path={ROUTES.SIGN_UP} exact component={Signup} />
             <Route path={ROUTES.SIGN_IN} exact component={Login} />
+            <Route path={ROUTES.FORGOT_P} exact component={ForgotPassword} />
             <Route path={ROUTES.Dashboard} exact component={DashboardApp} />
           </div>
         </BrowserRouter>

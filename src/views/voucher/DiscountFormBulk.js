@@ -6,7 +6,7 @@ import TextField from "@material-ui/core/TextField";
 import { Grid } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import ScaleLoader from "react-spinners/ScaleLoader";
-import AutoDialogDemo from "./autoDialog";
+import AlertDialog from "./autoDialog";
 // import axios from "axios";
 
 const styles = theme => ({
@@ -87,7 +87,7 @@ class DiscountBTextFields extends React.Component {
     disabled: false,
     isLoading: false,
     modalShow: false,
-    errorStatus: false
+    errorStatus: null
   };
   handleChangeText = e => {
     let value = e.target.value;
@@ -209,14 +209,16 @@ class DiscountBTextFields extends React.Component {
       .then(response => {
         console.log(response);
         let res = response;
-        if (res.status === 201) {
-          this.setState({ ...this.state, modalShow: true });
+        if (res.status === 201 || res.status === 400) {
+          this.setState({ ...this.state, isLoading: false, modalShow: true });
         }
       })
       .catch(error => {
         console.error("Error:", error || "Problem tryin to upload");
         this.setState({
           ...this.state,
+          isLoading: false,
+          modalShow: true,
           errorStatus: true
         });
         console.log(chinedu);
@@ -230,13 +232,16 @@ class DiscountBTextFields extends React.Component {
     const { classes } = this.props;
     return (
       <Grid md={12}>
-        <AutoDialogDemo
-          voucherType={this.state.vData.discountType}
-          status={this.state.errorStatus}
-          show={this.state.modalShow}
-        />
         {!this.state.isLoading ? (
           <form className={classes.container} noValidate autoComplete="off">
+            <AlertDialog
+              status={this.state.modalShow}
+              content={
+                this.state.errorStatus === 201
+                  ? "Vouchers created successfully."
+                  : "An error has occured, please try again"
+              }
+            />
             <Grid md={12}>
               <TextField
                 id="filled-select-voucher-charSet"
@@ -425,6 +430,11 @@ class DiscountBTextFields extends React.Component {
             />
           </Grid>
         )}
+        {/* <AutoDialogDemo
+          voucherType={this.state.vData.discountType}
+          status={this.state.errorStatus}
+          open={this.state.modalShow}
+        /> */}
       </Grid>
     );
   }

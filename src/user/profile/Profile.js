@@ -20,12 +20,12 @@ class Profile extends Component {
         this.loadUserProfile = this.loadUserProfile.bind(this);
     }
 
-    loadUserProfile(username) {
+    loadUserProfile(lastname) {
         this.setState({
             isLoading: true
         });
 
-        getUserProfile(username)
+        getUserProfile(lastname)
         .then(response => {
             this.setState({
                 user: response,
@@ -47,13 +47,13 @@ class Profile extends Component {
     }
       
     componentDidMount() {
-        const username = this.props.match.params.username;
-        this.loadUserProfile(username);
+        const lastname = this.props.match.params.lastname;
+        this.loadUserProfile(lastname);
     }
 
     componentDidUpdate(nextProps) {
-        if(this.props.match.params.username !== nextProps.match.params.username) {
-            this.loadUserProfile(nextProps.match.params.username);
+        if(this.props.match.params.lastname !== nextProps.match.params.lastname) {
+            this.loadUserProfile(nextProps.match.params.lastname);
         }        
     }
 
@@ -87,7 +87,7 @@ class Profile extends Component {
                                 </div>
                                 <div className="user-summary">
                                     <div className="full-name">{this.state.user.name}</div>
-                                    <div className="username">@{this.state.user.username}</div>
+                                    <div className="lastname">@{this.state.user.lastname}</div>
                                     <div className="user-joined">
                                         Joined {formatDate(this.state.user.joinedAt)}
                                     </div>
