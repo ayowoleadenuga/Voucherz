@@ -9,9 +9,7 @@ import {
   Col
 } from "reactstrap";
 
-// import { thead, tbody } from "./voucherData";
 import axios from "axios";
-// import LoadingIndicator from "../../common/LoadingIndicator";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import CustomizedDialogDemo from "./modal";
 
@@ -62,7 +60,6 @@ class VoucherTable extends React.Component {
                 <CardTitle tag="h4">Voucher Table</CardTitle>
               </CardHeader>
               <CardBody>
-                {/* <p>*RS: Redemption Status</p> */}
                 {!this.state.isLoading ? (
                   <Table responsive>
                     <thead className="text-primary">
@@ -119,7 +116,4 @@ class VoucherTable extends React.Component {
     );
   }
 }
-
-// const voucherNumber = VoucherTable.state.voucher.length;
-
 export default VoucherTable;

@@ -6,8 +6,8 @@ import TextField from "@material-ui/core/TextField";
 import { Grid } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import ScaleLoader from "react-spinners/ScaleLoader";
-import AlertDialog from "./autoDialog";
-// import axios from "axios";
+import { createVoucherUrl } from "../../util/APIUtils";
+import { notification } from "antd";
 
 const styles = theme => ({
   container: {
@@ -37,8 +37,14 @@ const styles = theme => ({
 });
 const override = {
   display: "block",
-  margin: "140px 0 140px 380px"
+  margin: "140px 0 140px 400px"
 };
+notification.config({
+  placement: "bottomRight",
+  bottom: 200,
+  duration: 0
+});
+
 class DiscountBTextFields extends React.Component {
   state = {
     vData: {
@@ -84,9 +90,8 @@ class DiscountBTextFields extends React.Component {
         label: "Alphabet"
       }
     ],
-    disabled: false,
+    disabled: true,
     isLoading: false,
-    modalShow: false,
     errorStatus: null
   };
   handleChangeText = e => {
@@ -158,9 +163,8 @@ class DiscountBTextFields extends React.Component {
           label: "Alphabet"
         }
       ],
-      disabled: false,
+      disabled: true,
       isLoading: false,
-      modalShow: false,
       errorStatus: false
     });
   };
@@ -176,7 +180,7 @@ class DiscountBTextFields extends React.Component {
   };
   handleFormSubmit = e => {
     e.preventDefault();
-    this.setState({ ...this.state, isLoading: true, disabled: true });
+    this.setState({ ...this.state, isLoading: true });
     let discountData = {
       VoucherType: this.state.voucherType,
       Campaign: this.state.vData.campaignName,
@@ -196,55 +200,48 @@ class DiscountBTextFields extends React.Component {
       CreatedBy: "Wole",
       VoucherCount: this.state.vData.quantity
     };
-    let chinedu = JSON.stringify(discountData);
-    fetch("https://172.20.20.23:5001/create", {
-      method: "POST",
-      body: chinedu,
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      }
-      // responseType: "json"
-    })
+    createVoucherUrl(discountData)
       .then(response => {
         console.log(response);
         let res = response;
         if (res.status === 201 || res.status === 400) {
           this.setState({ ...this.state, isLoading: false, modalShow: true });
         }
+        notification.success({
+          message: "Voucherz",
+          description: "Thank you! You've successfully created your vouchers"
+        });
       })
       .catch(error => {
-        console.error("Error:", error || "Problem tryin to upload");
+        console.error(
+          "Error:",
+          error ||
+            "Problem tryin to upload. Click the cancel button to clear the form and try again. Thank you!"
+        );
         this.setState({
           ...this.state,
           isLoading: false,
-          modalShow: true,
           errorStatus: true
         });
-        console.log(chinedu);
+        notification.error({
+          message: "Voucherz",
+          description:
+            "Your request cannot be made at this time as the server is currently unreachable. Click the cancel button to clear the form and try again. Thank you! " ||
+            "Sorry! Something went wrong. Click the cancel button to clear the form and try again. Thank you!"
+        });
+        console.log(discountData);
       });
   };
-  handleDisable = () => {
-    this.setState({ ...this.state, disabled: !this.state.disabled });
-  };
-
   render() {
     const { classes } = this.props;
     return (
       <Grid md={12}>
         {!this.state.isLoading ? (
           <form className={classes.container} noValidate autoComplete="off">
-            <AlertDialog
-              status={this.state.modalShow}
-              content={
-                this.state.errorStatus === 201
-                  ? "Vouchers created successfully."
-                  : "An error has occured, please try again"
-              }
-            />
             <Grid md={12}>
               <TextField
                 id="filled-select-voucher-charSet"
+                required
                 select
                 label="Select character set"
                 name={"charSet"}
@@ -287,7 +284,7 @@ class DiscountBTextFields extends React.Component {
               </TextField>
               <TextField
                 id="filled-number"
-                label="Amount or Percentage value"
+                label="Amount or Percentage off"
                 name={"amount"}
                 value={this.state.vData.amount}
                 disabled={
@@ -405,7 +402,19 @@ class DiscountBTextFields extends React.Component {
                 color="primary"
                 variant="contained"
                 className={`${classes.button} ${classes.btnColor}`}
-                disabled={this.state.disabled}
+                disabled={
+                  this.state.vData.campaignName !== "" &&
+                  this.state.vData.charSet !== "" &&
+                  this.state.vData.discountType !== "" &&
+                  (this.state.vData.discountUnit !== "" ||
+                    this.state.vData.amount !== "") &&
+                  this.state.vData.expiryDate !== "" &&
+                  this.state.vData.voucherLength !== "" &&
+                  this.state.vData.quantity !== "" &&
+                  this.state.vData.startDate !== ""
+                    ? !this.state.disabled
+                    : this.state.disabled
+                }
                 onClick={this.handleFormSubmit}
               >
                 Generate
@@ -430,11 +439,6 @@ class DiscountBTextFields extends React.Component {
             />
           </Grid>
         )}
-        {/* <AutoDialogDemo
-          voucherType={this.state.vData.discountType}
-          status={this.state.errorStatus}
-          open={this.state.modalShow}
-        /> */}
       </Grid>
     );
   }

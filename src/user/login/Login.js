@@ -37,6 +37,7 @@ class LoginForm extends Component {
         const loginRequest = Object.assign({}, values);
         login(loginRequest)
           .then(response => {
+            console.log(response);
             localStorage.setItem(ACCESS_TOKEN, response.accessToken);
             // eslint-disable-next-line react/prop-types
             this.props.onLogin();
@@ -57,7 +58,6 @@ class LoginForm extends Component {
               });
             }
           });
-        console.log(loginRequest);
       }
     });
   }

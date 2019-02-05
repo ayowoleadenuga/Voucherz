@@ -23,7 +23,7 @@ class CreateVoucher extends React.Component {
                       </Col>
                       <Col xs={7} md={8}>
                         <div className="numbers">
-                          <p className="card-category">Voucher</p>
+                          <p className="card-category">Voucher Tables</p>
                         </div>
                       </Col>
                     </Row>
@@ -52,18 +52,15 @@ class CreateVoucher extends React.Component {
               </Link>
             </Col>
           </Row>
-          {/* <Row>
-            <Col md={12} className="RenderSpace" />
-          </Row> */}
           <Switch>
             <Route
               exact
-              path="/Vouchers/voucher-table"
+              path="/vouchers/voucher-table"
               render={() => <VoucherTable />}
             />
             <Route
               exact
-              path="/Vouchers/create-vouchers"
+              path="/vouchers/create-vouchers"
               render={() => <ControlledExpansionPanels />}
             />
           </Switch>

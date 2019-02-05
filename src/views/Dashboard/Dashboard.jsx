@@ -1,7 +1,8 @@
 import React from "react";
 import { Card, CardBody, CardFooter, CardTitle, Row, Col } from "reactstrap";
 import Stats from "components/Stats/Stats.jsx";
-import VoucherTable from "../voucher/VoucherTable";
+// import VoucherTable from "../voucher/VoucherTable";
+import DiscountTable from "../../Tables/DiscountTable";
 
 class Dashboard extends React.Component {
   render() {
@@ -21,7 +22,8 @@ class Dashboard extends React.Component {
                     <div className="numbers">
                       <p className="card-category">Value Voucher</p>
                       <CardTitle tag="p">
-                        {VoucherTable.voucherNumber}
+                        {/* {VoucherTable.voucherNumber} */}
+                        <p>78</p>
                       </CardTitle>
                     </div>
                   </Col>
@@ -108,7 +110,8 @@ class Dashboard extends React.Component {
         </Row>
         <Row>
           <Col xs={12} sm={12} md={12}>
-            <VoucherTable />
+            {/* <VoucherTable /> */}
+            <DiscountTable.js />
           </Col>
         </Row>
       </div>

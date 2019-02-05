@@ -1,4 +1,4 @@
-import { API_BASE_URL, POLL_LIST_SIZE, ACCESS_TOKEN } from "../constants";
+import { API_BASE_URL, API_BASE_URL2, POLL_LIST_SIZE, ACCESS_TOKEN } from "../constants";
 
 const request = options => {
   const headers = new Headers({
@@ -32,11 +32,11 @@ export function getAllPolls(page, size) {
     });
 }
 
-export function createDiscountBulk(vData) {
+export function createVoucherUrl(discountData) {
   return request({
-    url: API_BASE_URL + "/create",
+    url: API_BASE_URL2 + "/create",
     method: "POST",
-    body: JSON.stringify(vData)
+    body: JSON.stringify(discountData)
   });
 }
 
