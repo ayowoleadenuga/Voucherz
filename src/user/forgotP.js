@@ -38,12 +38,14 @@ class ForgotPassword extends Component {
     };
     forgotPassword(forgotPasswordRequest)
       .then(response => {
-        notification.success({
-          message: "Voucherz",
-          description: "Thank you! A link has been sent to your mail!"
-        });
-        // eslint-disable-next-line react/prop-types
-        this.props.history.push("/login");
+        if (response.status === 202 || response.status === 201) {
+          notification.success({
+            message: "Voucherz",
+            description: "Thank you! A link has been sent to your mail!"
+          });
+          // eslint-disable-next-line react/prop-types
+          this.props.history.push("/login");
+        }
       })
       .catch(error => {
         notification.error({

@@ -11,6 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import PropTypes, { any } from "prop-types";
 import EditDialogDemo from "./EditVoucherModal";
 import { notification } from "antd";
+import { updateDisable } from "../../util/APIUtils";
 
 const DialogTitle = withStyles(theme => ({
   root: {
@@ -77,18 +78,7 @@ class CustomizedDialogDemo extends React.Component {
   handleDisable = () => {
     let data = this.state.disable;
     if (data === false) {
-      let url =
-        "https://172.20.20.23:5001/disable/" +
-        this.props.title +
-        "?Merchant=Enunwah";
-      fetch(url, {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        }
-      })
+      updateDisable(data, "disable")
         .then(response => {
           console.log(response);
           notification.success({
@@ -112,18 +102,7 @@ class CustomizedDialogDemo extends React.Component {
         });
       this.setState({ ...this.state, disable: true });
     } else {
-      let url =
-        "https://172.20.20.23:5001/enable/" +
-        this.props.title +
-        "?Merchant=Enunwah";
-      fetch(url, {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        }
-      })
+      updateDisable(data, "enable")
         .then(response => {
           console.log(response);
           notification.success({

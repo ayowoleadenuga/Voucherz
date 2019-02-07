@@ -7,10 +7,6 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
   Container
 } from "reactstrap";
 import * as ROUTES from "../../routes/base";
@@ -126,6 +122,47 @@ class Header extends React.Component {
     });
   }
   render() {
+    let formatAMPM = () => {
+      var d = new Date(),
+        minutes =
+          d.getMinutes().toString().length === 1
+            ? "0" + d.getMinutes()
+            : d.getMinutes(),
+        hours =
+          d.getHours().toString().length === 1
+            ? "0" + d.getHours()
+            : d.getHours(),
+        ampm = d.getHours() >= 12 ? "pm" : "am",
+        months = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec"
+        ],
+        days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      return (
+        days[d.getDay()] +
+        " " +
+        months[d.getMonth()] +
+        " " +
+        d.getDate() +
+        " " +
+        d.getFullYear() +
+        " " +
+        hours +
+        ":" +
+        minutes +
+        ampm
+      ).toString();
+    };
     return (
       // add or remove classes depending if we are on full-screen-maps page or not
       <Navbar
@@ -168,43 +205,13 @@ class Header extends React.Component {
             navbar
             className="justify-content-end"
           >
-            {/* <form>
-              <InputGroup className="no-border">
-                <Input placeholder="Search..." />
-                <InputGroupAddon addonType="append">
-                  <InputGroupText>
-                    <i className="nc-icon nc-zoom-split" />
-                  </InputGroupText>
-                </InputGroupAddon>
-              </InputGroup>
-            </form> */}
             <Nav navbar>
               <NavItem className="nav-link btn-magnify">
                 <Link to="" className="nav-link btn-magnify">
-                  <i className="nc-icon nc-layout-11" />
-                  <p>
-                    <span className="d-lg-none d-md-block">Stats</span>
-                  </p>
+                  <p>{() => formatAMPM}</p>
                 </Link>
               </NavItem>
-              <Dropdown
-                nav
-                isOpen={this.state.dropdownOpen}
-                toggle={e => this.dropdownToggle(e)}
-              >
-                <DropdownToggle caret nav>
-                  <i className="nc-icon nc-bell-55" />
-                  <p>
-                    <span className="d-lg-none d-md-block">Some Actions</span>
-                  </p>
-                </DropdownToggle>
-                <DropdownMenu right>
-                  <DropdownItem tag="a">Action</DropdownItem>
-                  <DropdownItem tag="a">Another Action</DropdownItem>
-                  <DropdownItem tag="a">Something else here</DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-              <NavItem>
+              <NavItem className="nav-link btn-magnify">
                 <Link
                   to={ROUTES.LANDING}
                   onClick={this.handleLogout}

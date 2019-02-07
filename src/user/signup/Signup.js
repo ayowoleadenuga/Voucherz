@@ -11,7 +11,6 @@ import {
   EMAIL_MAX_LENGTH,
   COMPANYSIZE_MIN_LENGTH,
   COMPANYSIZE_MAX_LENGTH,
-  PHONENUMBER_MIN_LENGTH,
   PHONENUMBER_MAX_LENGTH,
   PASSWORD_MIN_LENGTH,
   PASSWORD_MAX_LENGTH
@@ -332,24 +331,18 @@ class Signup extends Component {
         errorMsg: `Only numbers allowed`
       };
     }
-    if (phoneNumber.length < PHONENUMBER_MIN_LENGTH) {
+    if (phoneNumber.length > PHONENUMBER_MAX_LENGTH) {
       return {
         validateStatus: "error",
-        errorMsg: `Phone number length is too short, value cannot be less than ${PHONENUMBER_MIN_LENGTH})`
-      };
-    } else if (phoneNumber.length > PHONENUMBER_MAX_LENGTH) {
-      return {
-        validationStatus: "error",
-        errorMsg: `Phone number length has exceeded ${COMPANYSIZE_MAX_LENGTH})`
+        errorMsg: `Phone number length is too long, value should be less than ${PHONENUMBER_MAX_LENGTH})`
       };
     } else {
       return {
-        validateStatus: "success",
-        errorMsg: null
+        validationStatus: "error",
+        errorMsg: `Phone number length not up to ${PHONENUMBER_MAX_LENGTH})`
       };
     }
   };
-
   validateEmail = email => {
     if (!email) {
       return {
@@ -477,7 +470,7 @@ class Signup extends Component {
         validateStatus: "error",
         errorMsg: `Password and Confirm Password should be the same.)`
       };
-    } else if (password !== this.state.password){
+    } else {
       return {
         validateStatus: "success",
         errorMsg: null

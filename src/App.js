@@ -94,10 +94,7 @@ class App extends Component {
       <BrowserRouter>
         <Switch>
           <Route exact path={ROUTES.LANDING} component={Login} />
-          <Route
-            path={ROUTES.SIGN_IN}
-            render={(props) => <Login {...props} />}
-          />
+          <Route path={ROUTES.SIGN_IN} render={props => <Login {...props} />} />
           <Route path={ROUTES.SIGN_UP} component={Signup} />
           <Route path={ROUTES.FORGOT_P} component={ForgotPassword} />
           <PrivateRoute

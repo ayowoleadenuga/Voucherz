@@ -72,6 +72,14 @@ export function signup(signupRequest) {
   });
 }
 
+export function updateDisable(data, func) {
+  return request({
+    url: API_BASE_URL2 + "/" + func,
+    method: "POST",
+    body: JSON.stringify(data)
+  });
+}
+
 export function forgotPassword(forgotPasswordRequest) {
   return request({
     url: API_BASE_URL2 + "/forgot-password/end",
@@ -108,40 +116,6 @@ export function getCurrentUser() {
 export function getUserProfile(lastname) {
   return request({
     url: API_BASE_URL + "/users/" + lastname,
-    method: "GET"
-  });
-}
-
-export function getUserCreatedPolls(lastname, page, size) {
-  page = page || 0;
-  size = size || POLL_LIST_SIZE;
-
-  return request({
-    url:
-      API_BASE_URL +
-      "/users/" +
-      lastname +
-      "/polls?page=" +
-      page +
-      "&size=" +
-      size,
-    method: "GET"
-  });
-}
-
-export function getUserVotedPolls(lastname, page, size) {
-  page = page || 0;
-  size = size || POLL_LIST_SIZE;
-
-  return request({
-    url:
-      API_BASE_URL +
-      "/users/" +
-      lastname +
-      "/votes?page=" +
-      page +
-      "&size=" +
-      size,
     method: "GET"
   });
 }
