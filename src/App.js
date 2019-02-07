@@ -2,13 +2,7 @@ import React, { Component } from "react";
 import DashboardApp from "./DashboardApp";
 import { getCurrentUser } from "./util/APIUtils";
 import { ACCESS_TOKEN } from "./constants/index";
-import {
-  withRouter,
-  Route,
-  BrowserRouter,
-  Switch,
-  Redirect
-} from "react-router-dom";
+import { Route, BrowserRouter, Switch } from "react-router-dom";
 import Login from "./user/login/Login";
 import Signup from "./user/signup/Signup";
 import * as ROUTES from "./routes/base";
@@ -56,9 +50,9 @@ class App extends Component {
       });
   }
 
-  // componentDidMount() {
-  //   this.loadCurrentUser();
-  // }
+  componentDidMount() {
+    // this.loadCurrentUser();
+  }
 
   handleLogout(
     redirectTo = "/",
@@ -81,6 +75,9 @@ class App extends Component {
   }
 
   handleLogin() {
+    const isAuthenticated = localStorage.getItem(ACCESS_TOKEN) ? true : false;
+    this.setState({ isAuthenticated });
+
     notification.success({
       message: "Voucherz",
       description: "You're successfully logged in."
@@ -96,18 +93,14 @@ class App extends Component {
     return (
       <BrowserRouter>
         <Switch>
-          <Route
-            path={ROUTES.LANDING}
-            render={props => <Login onLogin={this.handleLogin} {...props} />}
-          />
+          <Route exact path={ROUTES.LANDING} component={Login} />
           <Route
             path={ROUTES.SIGN_IN}
-            render={props => <Login onLogin={this.handleLogin} {...props} />}
+            render={(props) => <Login {...props} />}
           />
           <Route path={ROUTES.SIGN_UP} component={Signup} />
           <Route path={ROUTES.FORGOT_P} component={ForgotPassword} />
           <PrivateRoute
-            authenticated={this.state.isAuthenticated}
             path={ROUTES.Dashboard}
             component={DashboardApp}
             handleLogout={this.handleLogout}
@@ -119,4 +112,4 @@ class App extends Component {
   }
 }
 
-export default withRouter(App);
+export default App;

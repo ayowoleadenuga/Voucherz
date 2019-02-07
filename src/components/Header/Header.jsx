@@ -11,14 +11,12 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  Container,
-  InputGroup,
-  InputGroupText,
-  InputGroupAddon,
-  Input
+  Container
 } from "reactstrap";
-
+import * as ROUTES from "../../routes/base";
 import dashRoutes from "../../routes/dashboard.jsx";
+import { ACCESS_TOKEN } from "../../constants/index.js";
+import { notification } from "antd";
 
 class Header extends React.Component {
   constructor(props) {
@@ -26,10 +24,13 @@ class Header extends React.Component {
     this.state = {
       isOpen: false,
       dropdownOpen: false,
-      color: "transparent"
+      color: "transparent",
+      currentUser: null,
+      isAuthenticated: false
     };
     this.toggle = this.toggle.bind(this);
     this.dropdownToggle = this.dropdownToggle.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
   }
   toggle() {
     if (this.state.isOpen) {
@@ -104,6 +105,26 @@ class Header extends React.Component {
       this.refs.sidebarToggle.classList.toggle("toggled");
     }
   }
+  handleLogout(
+    redirectTo = "/",
+    notificationType = "success",
+    description = "You're successfully logged out."
+  ) {
+    localStorage.removeItem(ACCESS_TOKEN);
+
+    this.setState({
+      currentUser: null,
+      isAuthenticated: false
+    });
+
+    // eslint-disable-next-line react/prop-types
+    this.location.reload();
+    this.props.history.push(redirectTo);
+    notification[notificationType]({
+      message: "Voucherz",
+      description: description
+    });
+  }
   render() {
     return (
       // add or remove classes depending if we are on full-screen-maps page or not
@@ -147,7 +168,7 @@ class Header extends React.Component {
             navbar
             className="justify-content-end"
           >
-            <form>
+            {/* <form>
               <InputGroup className="no-border">
                 <Input placeholder="Search..." />
                 <InputGroupAddon addonType="append">
@@ -156,10 +177,10 @@ class Header extends React.Component {
                   </InputGroupText>
                 </InputGroupAddon>
               </InputGroup>
-            </form>
+            </form> */}
             <Nav navbar>
-              <NavItem>
-                <Link to="/login" className="nav-link btn-magnify">
+              <NavItem className="nav-link btn-magnify">
+                <Link to="" className="nav-link btn-magnify">
                   <i className="nc-icon nc-layout-11" />
                   <p>
                     <span className="d-lg-none d-md-block">Stats</span>
@@ -184,7 +205,11 @@ class Header extends React.Component {
                 </DropdownMenu>
               </Dropdown>
               <NavItem>
-                <Link to="#pablo" className="nav-link btn-rotate">
+                <Link
+                  to={ROUTES.LANDING}
+                  onClick={this.handleLogout}
+                  className="nav-link btn-rotate"
+                >
                   <i className="nc-icon nc-button-power" />
                   <p>
                     <span className="d-lg-none d-md-block">Account</span>

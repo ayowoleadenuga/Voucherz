@@ -8,8 +8,7 @@ import MuiDialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
-import PropTypes, { any } from "prop-types";
-import EditDialogDemo from "./EditVoucherModal";
+import PropTypes from "prop-types";
 import { notification } from "antd";
 
 const DialogTitle = withStyles(theme => ({
@@ -63,7 +62,7 @@ const DialogActions = withStyles(theme => ({
   }
 }))(MuiDialogActions);
 
-class CustomizedDialogDemo extends React.Component {
+class UserDialogDemo extends React.Component {
   state = {
     open: false,
     disable: false
@@ -93,15 +92,15 @@ class CustomizedDialogDemo extends React.Component {
           console.log(response);
           notification.success({
             message: "Voucherz",
-            description: `You have successfully your disabled the voucher ${
-              this.props.title
+            description: `You have successfully your disabled user ${
+              this.props.lastName
             }`
           });
         })
         .catch(error => {
           console.error(
             "Error:",
-            error || "Error tryin to disable. Please try again. Thank you!"
+            error || "Error tryin to disable user. Please try again. Thank you!"
           );
           notification.error({
             message: "Voucherz",
@@ -170,39 +169,22 @@ class CustomizedDialogDemo extends React.Component {
           open={this.state.open}
         >
           <DialogTitle id="customized-dialog-title" onClose={this.handleClose}>
-            {this.props.title}
+            User
           </DialogTitle>
           <DialogContent>
             <Typography gutterBottom>
-              Voucher Type: {this.props.voucherType}
+              First-Name: {this.props.firstName}
             </Typography>
             <Typography gutterBottom>
-              Campaign Name: {this.props.campaignName}
+              Last-Name: {this.props.lastName}
             </Typography>
-            <Typography gutterBottom>
-              Voucher Status: {this.props.status}
-            </Typography>
+            <Typography gutterBottom>Email: {this.props.email}</Typography>
             <Typography gutterBottom>
               Date Created: {this.props.dateCreated}
             </Typography>
-            <Typography gutterBottom>
-              Expiry Date: {this.props.expiryDate}
-            </Typography>
-            <Typography gutterBottom>
-              Redemption Status: {this.props.redemptionStatus}
-            </Typography>
+            <Typography gutterBottom>Role: {this.props.role}</Typography>
           </DialogContent>
           <DialogActions>
-            <EditDialogDemo
-              voucherCode={this.props.voucherCode}
-              voucherType={this.props.voucherType}
-              value={this.props.value}
-              title={this.props.title}
-              campaignName={this.props.campaignName}
-              status={this.props.status}
-              redemptionStatus={this.props.redemptionStatus}
-              dateCreated={this.props.dateCreated}
-            />
             <Button
               onClick={this.handleDisable}
               color="primary"
@@ -216,16 +198,12 @@ class CustomizedDialogDemo extends React.Component {
     );
   }
 }
-CustomizedDialogDemo.propTypes = {
-  voucherType: PropTypes.string,
-  voucherCode: PropTypes.string,
-  value: any,
-  title: PropTypes.string,
-  campaignName: PropTypes.string,
-  status: PropTypes.string,
-  redemptionStatus: PropTypes.string,
-  dateCreated: PropTypes.string,
-  expiryDate: PropTypes.string
+UserDialogDemo.propTypes = {
+  firstName: PropTypes.string,
+  lastName: PropTypes.string,
+  email: PropTypes.string,
+  role: PropTypes.string,
+  dateCreated: PropTypes.string
 };
 
-export default CustomizedDialogDemo;
+export default UserDialogDemo;

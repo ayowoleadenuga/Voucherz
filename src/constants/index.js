@@ -1,6 +1,6 @@
-export const API_BASE_URL = "http://d5ec587c.ngrok.io/api";
+export const API_BASE_URL = "http://172.20.20.23:8079/api/voucher";
 
-export const API_BASE_URL2 = "https://172.20.20.23:5001";
+export const API_BASE_URL2 = "http://172.20.20.23:8079/api/user";
 //export const API_BASE_URL = '/api';
 export const ACCESS_TOKEN = "accessToken";
 

@@ -1,14 +1,17 @@
 import React, { Component } from "react";
 import { login } from "../../util/APIUtils";
+import { withRouter, Link } from 'react-router-dom';
 import "antd/dist/antd.css";
 import "./Login.css";
-import { Link } from "react-router-dom";
 import { ACCESS_TOKEN } from "../../constants";
 import { Form, Input, Button, Icon, notification } from "antd";
 
 const FormItem = Form.Item;
 
 class Login extends Component {
+  handleLogin = () => {
+    this.props.history.push('dashboard');
+  };
   render() {
     const AntWrappedLoginForm = Form.create()(LoginForm);
     return (
@@ -16,7 +19,7 @@ class Login extends Component {
         <h1>VOUCHERZ</h1>
         <h2 className="page-title">Login</h2>
         <div className="login-content">
-          <AntWrappedLoginForm onLogin={this.props.onLogin} />
+          <AntWrappedLoginForm  onLogin={this.handleLogin}/>
         </div>
       </div>
     );
@@ -35,6 +38,11 @@ class LoginForm extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         const loginRequest = Object.assign({}, values);
+
+        // setTimeout(() => {
+        //   localStorage.setItem(ACCESS_TOKEN, 'Bearer abcdefgh');
+        //   this.props.onLogin()
+        // }, 1000)
         login(loginRequest)
           .then(response => {
             console.log(response);
@@ -118,4 +126,4 @@ class LoginForm extends Component {
   }
 }
 
-export default Login;
+export default withRouter(Login);

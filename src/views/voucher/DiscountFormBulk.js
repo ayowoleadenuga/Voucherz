@@ -6,7 +6,7 @@ import TextField from "@material-ui/core/TextField";
 import { Grid } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import ScaleLoader from "react-spinners/ScaleLoader";
-import { createVoucherUrl } from "../../util/APIUtils";
+// import { createVoucherUrl } from "../../util/APIUtils";
 import { notification } from "antd";
 
 const styles = theme => ({
@@ -200,7 +200,15 @@ class DiscountBTextFields extends React.Component {
       CreatedBy: "Wole",
       VoucherCount: this.state.vData.quantity
     };
-    createVoucherUrl(discountData)
+    // createVoucherUrl(discountData)
+    fetch("https://172.20.20.23:5001/create", {
+      method: "POST",
+      body: JSON.stringify(discountData),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    })
       .then(response => {
         console.log(response);
         let res = response;
@@ -230,6 +238,7 @@ class DiscountBTextFields extends React.Component {
             "Sorry! Something went wrong. Click the cancel button to clear the form and try again. Thank you!"
         });
         console.log(discountData);
+        this.props.history.push("/dashboard/discount-voucher-table");
       });
   };
   render() {

@@ -164,7 +164,7 @@ class ValueTextFields extends React.Component {
         Prefix: this.state.vData.prefix,
         Suffix: this.state.vData.suffix
       },
-      CreatedBy: "Wole",
+      CreatedBy: "Stephen",
       VoucherCount: "1"
     };
     createVoucherUrl(valueData)

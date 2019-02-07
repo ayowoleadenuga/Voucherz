@@ -2,6 +2,7 @@ import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
+import TextField from "@material-ui/core/TextField";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
@@ -9,8 +10,8 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import PropTypes, { any } from "prop-types";
-import EditDialogDemo from "./EditVoucherModal";
 import { notification } from "antd";
+import * as ROUTES from "../../routes/base";
 
 const DialogTitle = withStyles(theme => ({
   root: {
@@ -49,6 +50,17 @@ const DialogContent = withStyles(theme => ({
   },
   btnColor: {
     backgroundColor: "#0bf"
+  },
+  container: {
+    display: "flex",
+    flexWrap: "wrap",
+    width: "90%",
+    margin: "0 auto"
+  },
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: 250
   }
 }))(MuiDialogContent);
 
@@ -63,90 +75,61 @@ const DialogActions = withStyles(theme => ({
   }
 }))(MuiDialogActions);
 
-class CustomizedDialogDemo extends React.Component {
+class EditDialogDemo extends React.Component {
   state = {
     open: false,
-    disable: false
+    data: {
+      expiryDate: ""
+    }
   };
-
+  dateCharsethandler = e => {
+    let value = e.target.value;
+    let name = e.target.name;
+    this.setState(prevState => ({
+      data: {
+        ...prevState.vData,
+        [name]: value
+      }
+    }));
+  };
   handleClickOpen = () => {
     this.setState({
       open: true
     });
   };
-  handleDisable = () => {
-    let data = this.state.disable;
-    if (data === false) {
-      let url =
-        "https://172.20.20.23:5001/disable/" +
-        this.props.title +
-        "?Merchant=Enunwah";
-      fetch(url, {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        }
-      })
-        .then(response => {
-          console.log(response);
-          notification.success({
-            message: "Voucherz",
-            description: `You have successfully your disabled the voucher ${
-              this.props.title
-            }`
-          });
-        })
-        .catch(error => {
-          console.error(
-            "Error:",
-            error || "Error tryin to disable. Please try again. Thank you!"
-          );
-          notification.error({
-            message: "Voucherz",
-            description:
-              "Your request cannot be made at this time as the server is currently unreachable. Click the cancel button to clear the form and try again. Thank you! " ||
-              "Sorry! Something went wrong. Click the cancel button to clear the form and try again. Thank you!"
-          });
+  handleFormSubmit = e => {
+    e.preventDefault();
+    let updateData = { data: this.state.data };
+    fetch("https://172.20.20.23:5001/create", {
+      method: "POST",
+      body: JSON.stringify(updateData),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    })
+      .then(response => {
+        console.log(response);
+        // let res = response;
+        notification.success({
+          message: "Voucherz",
+          description: "Thank you! You've successfully your voucher expiry date"
         });
-      this.setState({ ...this.state, disable: true });
-    } else {
-      let url =
-        "https://172.20.20.23:5001/enable/" +
-        this.props.title +
-        "?Merchant=Enunwah";
-      fetch(url, {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        }
       })
-        .then(response => {
-          console.log(response);
-          notification.success({
-            message: "Voucherz",
-            description: `You have successfully your enabled the voucher ${
-              this.props.title
-            }`
-          });
-        })
-        .catch(error => {
-          console.error(
-            "Error:",
-            error || "Error tryin to enable. Please try again. Thank you!"
-          );
-          notification.error({
-            message: "Voucherz",
-            description:
-              "Your request cannot be made at this time as the server is currently unreachable. Please try again. Thank you! " ||
-              "Sorry! Something went wrong. Please try again!"
-          });
+      .catch(error => {
+        console.error(
+          "Error:",
+          error ||
+            "Problem tryin to upload. Click the cancel button to clear the form and try again. Thank you!"
+        );
+        notification.error({
+          message: "Voucherz",
+          description:
+            "Your request cannot be made at this time as the server is currently unreachable. Click the cancel button to clear the form and try again. Thank you! " ||
+            "Sorry! Something went wrong. Click the cancel button to clear the form and try again. Thank you!"
         });
-      this.setState({ ...this.state, disable: false });
-    }
+      });
+    this.props.history.push(ROUTES.Dashboard + "/all-voucher-table");
   };
 
   handleClose = () => {
@@ -162,7 +145,7 @@ class CustomizedDialogDemo extends React.Component {
           onClick={this.handleClickOpen}
           className="btnColor"
         >
-          More
+          Edit
         </Button>
         <Dialog
           onClose={this.handleClose}
@@ -186,29 +169,41 @@ class CustomizedDialogDemo extends React.Component {
               Date Created: {this.props.dateCreated}
             </Typography>
             <Typography gutterBottom>
-              Expiry Date: {this.props.expiryDate}
+              Redemption Status: {this.props.redemptionStatus}
             </Typography>
             <Typography gutterBottom>
-              Redemption Status: {this.props.redemptionStatus}
+              <form className="container" noValidate autoComplete="off">
+                <TextField
+                  id="filled-date"
+                  label="Expiry Date"
+                  name={"expiryDate"}
+                  value={this.state.data.expiryDate}
+                  onChange={this.dateCharsethandler}
+                  type="date"
+                  className="textField"
+                  required
+                  margin="normal"
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                />
+              </form>
             </Typography>
           </DialogContent>
           <DialogActions>
-            <EditDialogDemo
-              voucherCode={this.props.voucherCode}
-              voucherType={this.props.voucherType}
-              value={this.props.value}
-              title={this.props.title}
-              campaignName={this.props.campaignName}
-              status={this.props.status}
-              redemptionStatus={this.props.redemptionStatus}
-              dateCreated={this.props.dateCreated}
-            />
             <Button
-              onClick={this.handleDisable}
+              onClick={this.handleFormSubmit}
               color="primary"
               className="btnColor"
             >
-              {this.state.disable ? "Enable" : "Disable"}
+              Update
+            </Button>
+            <Button
+              onClick={this.handleClose}
+              color="primary"
+              className="btnColor"
+            >
+              Close
             </Button>
           </DialogActions>
         </Dialog>
@@ -216,9 +211,9 @@ class CustomizedDialogDemo extends React.Component {
     );
   }
 }
-CustomizedDialogDemo.propTypes = {
-  voucherType: PropTypes.string,
+EditDialogDemo.propTypes = {
   voucherCode: PropTypes.string,
+  voucherType: PropTypes.string,
   value: any,
   title: PropTypes.string,
   campaignName: PropTypes.string,
@@ -228,4 +223,4 @@ CustomizedDialogDemo.propTypes = {
   expiryDate: PropTypes.string
 };
 
-export default CustomizedDialogDemo;
+export default EditDialogDemo;

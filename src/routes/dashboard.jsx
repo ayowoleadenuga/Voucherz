@@ -32,16 +32,16 @@ var dashRoutes = [
     component: Customers
   },
   {
+    path: "/admin",
+    name: "admin",
+    icon: "nc-icon nc-settings",
+    component: Products
+  },
+  {
     path: "/redemption",
     name: "Redemption",
     icon: "nc-icon nc-cart-simple",
     component: Redemption
-  },
-  {
-    path: "/products",
-    name: "Products",
-    icon: "nc-icon nc-delivery-fast",
-    component: Products
   },
   { path: "/mail", name: "Mail", icon: "nc-icon nc-email-85", component: Mail },
   { redirect: true, path: "/", pathTo: "/dashboard", name: "Dashboard" }

@@ -40,25 +40,25 @@ export function getAllPolls(page, size) {
   });
 }
 
-export function createVoucherUrl(discountData) {
+export function createVoucherUrl(data) {
   return request({
     url: API_BASE_URL2 + "/create",
     method: "POST",
-    body: JSON.stringify(discountData)
+    body: JSON.stringify(data)
   });
 }
 
-export function castVote(voteData) {
+export function requestVoucher(all) {
   return request({
-    url: API_BASE_URL + "/polls/" + voteData.pollId + "/votes",
-    method: "POST",
-    body: JSON.stringify(voteData)
+    url: API_BASE_URL2 + "/get" + all + "?Merchant=Enunwah",
+    method: "Get",
+    body: ""
   });
 }
 
 export function login(loginRequest) {
   return request({
-    url: API_BASE_URL + "/auth/signin",
+    url: API_BASE_URL2 + "/auth/signin",
     method: "POST",
     body: JSON.stringify(loginRequest)
   });
@@ -66,7 +66,7 @@ export function login(loginRequest) {
 
 export function signup(signupRequest) {
   return request({
-    url: API_BASE_URL + "/auth/signup",
+    url: API_BASE_URL2 + "/auth/signup",
     method: "POST",
     body: JSON.stringify(signupRequest)
   });
@@ -74,7 +74,7 @@ export function signup(signupRequest) {
 
 export function forgotPassword(forgotPasswordRequest) {
   return request({
-    url: API_BASE_URL + "/auth/signup",
+    url: API_BASE_URL2 + "/forgot-password/end",
     method: "POST",
     body: JSON.stringify(forgotPasswordRequest)
   });

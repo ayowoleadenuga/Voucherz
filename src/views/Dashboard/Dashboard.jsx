@@ -1,7 +1,7 @@
 import React from "react";
-import { Card, CardBody, CardFooter, CardTitle, Row, Col } from "reactstrap";
+import { Card, CardBody, CardTitle, Row, Col } from "reactstrap";
 import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
-import Stats from "components/Stats/Stats.jsx";
+// import Stats from "components/Stats/Stats.jsx";
 import VoucherTable from "../../Tables/VoucherTable";
 import Discount from "../../Tables/Discount";
 import ValueTable from "../../Tables/ValueTable";
@@ -132,7 +132,7 @@ class Dashboard extends React.Component {
                     <Row>
                       <Col xs={5} md={4}>
                         <div className="icon-big text-center">
-                          <i className="nc-icon nc-basket text-primary" />
+                          <i className="nc-icon nc-scissors text-primary" />
                         </div>
                       </Col>
                       <Col xs={7} md={8}>
@@ -178,17 +178,6 @@ class Dashboard extends React.Component {
                       </Col>
                     </Row>
                   </CardBody>
-                  <CardFooter>
-                    <hr />
-                    <Stats>
-                      {[
-                        {
-                          i: "far fa-calendar",
-                          t: "Last day"
-                        }
-                      ]}
-                    </Stats>
-                  </CardFooter>
                 </Card>
               </Link>
             </Col>

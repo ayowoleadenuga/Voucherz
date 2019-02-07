@@ -8,9 +8,10 @@ import {
   Row,
   Col
 } from "reactstrap";
-import { requestVoucher } from "../util/APIUtils";
+
+import axios from "axios";
 import ScaleLoader from "react-spinners/ScaleLoader";
-import CustomizedDialogDemo from "../views/voucher/modal";
+// import UserDialogDemo from "../views/Products/UserDialog";
 
 const override = {
   display: "block",
@@ -18,14 +19,17 @@ const override = {
   borderColor: "red"
 };
 
-class GiftTable extends React.Component {
+class AuditTable extends React.Component {
   state = {
-    voucher: [],
+    audit: [],
     isLoading: true,
     error: null
   };
   componentDidMount() {
-    requestVoucher("allgift")
+    axios
+      .get("https://172.20.20.23:5001/getalldiscount?Merchant=Enunwah", {
+        responseType: "json"
+      })
       .then(response => {
         const newUser = response.data;
         let voucherDataArr = Object.keys(newUser).reduce((arr, e) => {
@@ -54,43 +58,26 @@ class GiftTable extends React.Component {
           <Col xs={12}>
             <Card>
               <CardHeader>
-                <CardTitle tag="h4">Gift Voucher Table</CardTitle>
+                <CardTitle tag="h4">Users Table</CardTitle>
               </CardHeader>
               <CardBody>
                 {!this.state.isLoading ? (
                   <Table responsive>
                     <thead className="text-primary">
                       <tr>
-                        <th className="text-left">Voucher-Code</th>
-                        <th className="text-left">Campaign-Name</th>
-                        <th className="text-left">Value</th>
-                        <th className="text-left">Status</th>
-                        <th className="text-left">Date-Created</th>
-                        <th className="text-left">Expiry-Date</th>
+                        <th className="text-left">Last-Name</th>
+                        <th className="text-left">Role</th>
+                        <th className="text-left">Date</th>
                         <th className="text-left">Action</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {this.state.voucher.map(item => (
-                        <tr key={item.voucherCode}>
-                          <td>{item.voucherCode}</td>
-                          <td>{item.campaignName}</td>
-                          <td>{item.value}</td>
-                          <td>{item.status}</td>
-                          <td>{item.dateCreated}</td>
-                          <td>{item.expiryDate}</td>
-                          <td>
-                            <CustomizedDialogDemo
-                              title={item.voucherCode}
-                              campaignName={item.campaignName}
-                              voucherType={item.type}
-                              status={item.status}
-                              redemptionStatus={item.redemptionStatus}
-                              value={item.value}
-                              dateCreated={item.dateCreated}
-                              expiryDate={item.expiryDate}
-                            />
-                          </td>
+                      {this.state.user.map(item => (
+                        <tr key={item.user.lastName}>
+                          <td>{item.user.lastName}</td>
+                          <td>{item.user.role}</td>
+                          <td>{item.user.date}</td>
+                          <td>{item.action}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -111,4 +98,4 @@ class GiftTable extends React.Component {
     );
   }
 }
-export default GiftTable;
+export default AuditTable;

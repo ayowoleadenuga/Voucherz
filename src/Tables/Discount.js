@@ -8,8 +8,7 @@ import {
   Row,
   Col
 } from "reactstrap";
-
-import axios from "axios";
+import { requestVoucher } from "../util/APIUtils";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import CustomizedDialogDemo from "../views/voucher/modal";
 
@@ -26,10 +25,7 @@ class DiscountTable extends React.Component {
     error: null
   };
   componentDidMount() {
-    axios
-      .get("https://172.20.20.23:5001/getalldiscount?Merchant=Enunwah", {
-        responseType: "json"
-      })
+    requestVoucher("alldiscount")
       .then(response => {
         const newUser = response.data;
         let voucherDataArr = Object.keys(newUser).reduce((arr, e) => {
