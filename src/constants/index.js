@@ -1,4 +1,4 @@
-export const API_BASE_URL = "http://localhost:8085/api";
+export const API_BASE_URL = "http://d5ec587c.ngrok.io/api";
 
 export const API_BASE_URL2 = "https://172.20.20.23:5001";
 //export const API_BASE_URL = '/api';

@@ -11,14 +11,15 @@ import {
 
 import axios from "axios";
 import ScaleLoader from "react-spinners/ScaleLoader";
-import CustomizedDialogDemo from "./modal";
+import CustomizedDialogDemo from "../views/voucher/modal";
 
 const override = {
   display: "block",
   margin: "50px 45%",
   borderColor: "red"
 };
-class VoucherTable extends React.Component {
+
+class DiscountTable extends React.Component {
   state = {
     voucher: [],
     isLoading: true,
@@ -26,7 +27,7 @@ class VoucherTable extends React.Component {
   };
   componentDidMount() {
     axios
-      .get("https://172.20.20.23:5001/List/SHOPRITE-PROMO?Merchant=Enunwah", {
+      .get("https://172.20.20.23:5001/getalldiscount?Merchant=Enunwah", {
         responseType: "json"
       })
       .then(response => {
@@ -57,7 +58,7 @@ class VoucherTable extends React.Component {
           <Col xs={12}>
             <Card>
               <CardHeader>
-                <CardTitle tag="h4">Voucher Table</CardTitle>
+                <CardTitle tag="h4">Discount Voucher Table</CardTitle>
               </CardHeader>
               <CardBody>
                 {!this.state.isLoading ? (
@@ -79,7 +80,7 @@ class VoucherTable extends React.Component {
                         <tr key={item.voucherCode}>
                           <td>{item.voucherCode}</td>
                           <td>{item.campaignName}</td>
-                          <td>{item.type}</td>
+                          <td>{item.discountType}</td>
                           <td>{item.value}</td>
                           <td>{item.status}</td>
                           <td>{item.dateCreated}</td>
@@ -88,7 +89,7 @@ class VoucherTable extends React.Component {
                             <CustomizedDialogDemo
                               title={item.voucherCode}
                               campaignName={item.campaignName}
-                              voucherType={item.type}
+                              voucherType={item.discountType}
                               status={item.status}
                               redemptionStatus={item.redemptionStatus}
                               value={item.value}
@@ -116,4 +117,4 @@ class VoucherTable extends React.Component {
     );
   }
 }
-export default VoucherTable;
+export default DiscountTable;

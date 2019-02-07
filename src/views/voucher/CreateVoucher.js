@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardBody, Row, Col } from "reactstrap";
 import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
 import ControlledExpansionPanels from "./Generate";
-import VoucherTable from "./VoucherTable";
+import VoucherTable from "../../Tables/VoucherTable";
 // import { Link, Switch } from "@material-ui/core";
 
 class CreateVoucher extends React.Component {

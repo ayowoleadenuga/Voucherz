@@ -18,8 +18,7 @@ const override = {
   margin: "50px 45%",
   borderColor: "red"
 };
-
-class GiftTable extends React.Component {
+class VoucherTable extends React.Component {
   state = {
     voucher: [],
     isLoading: true,
@@ -27,7 +26,7 @@ class GiftTable extends React.Component {
   };
   componentDidMount() {
     axios
-      .get("https://172.20.20.23:5001/getallgift?Merchant=Enunwah", {
+      .get("https://172.20.20.23:5001/List/SHOPRITE-PROMO?Merchant=Enunwah", {
         responseType: "json"
       })
       .then(response => {
@@ -58,7 +57,7 @@ class GiftTable extends React.Component {
           <Col xs={12}>
             <Card>
               <CardHeader>
-                <CardTitle tag="h4">Gift Voucher Table</CardTitle>
+                <CardTitle tag="h4">All Voucher Table</CardTitle>
               </CardHeader>
               <CardBody>
                 {!this.state.isLoading ? (
@@ -67,9 +66,8 @@ class GiftTable extends React.Component {
                       <tr>
                         <th className="text-left">Voucher-Code</th>
                         <th className="text-left">Campaign-Name</th>
-                        <th className="text-left">Value</th>
+                        <th className="text-left">Type</th>
                         <th className="text-left">Status</th>
-                        <th className="text-left">Date-Created</th>
                         <th className="text-left">Expiry-Date</th>
                         <th className="text-left">Action</th>
                       </tr>
@@ -79,9 +77,8 @@ class GiftTable extends React.Component {
                         <tr key={item.voucherCode}>
                           <td>{item.voucherCode}</td>
                           <td>{item.campaignName}</td>
-                          <td>{item.value}</td>
+                          <td>{item.type}</td>
                           <td>{item.status}</td>
-                          <td>{item.dateCreated}</td>
                           <td>{item.expiryDate}</td>
                           <td>
                             <CustomizedDialogDemo
@@ -115,4 +112,4 @@ class GiftTable extends React.Component {
     );
   }
 }
-export default GiftTable;
+export default VoucherTable;

@@ -14,7 +14,7 @@ var dashRoutes = [
     component: Dashboard
   },
   {
-    path: "/Voucher",
+    path: "/voucher",
     name: "Voucher",
     icon: "nc-icon nc-credit-card",
     component: CreateVoucher
