@@ -52,7 +52,7 @@ class Dashboard extends React.Component {
         <div className="content">
           <Row>
             <Col xs={12} sm={3} md={3} lg={3}>
-              <Link to="/all-voucher-table">
+              <Link to="/all-voucher-table" id="links">
                 <Card
                   className="card-stats"
                   inverse
@@ -84,7 +84,7 @@ class Dashboard extends React.Component {
               </Link>
             </Col>
             <Col xs={12} sm={3} md={3} lg={3}>
-              <Link to="/value-voucher-table">
+              <Link to="/value-voucher-table" id="links">
                 <Card
                   className="card-stats"
                   inverse
@@ -117,7 +117,7 @@ class Dashboard extends React.Component {
             </Col>
 
             <Col xs={12} sm={3} md={3} lg={3}>
-              <Link to="/discount-voucher-table">
+              <Link to="/discount-voucher-table" id="links">
                 <Card
                   className="card-stats"
                   inverse
@@ -150,7 +150,7 @@ class Dashboard extends React.Component {
             </Col>
 
             <Col xs={12} sm={3} md={3} lg={3}>
-              <Link to="/gift-voucher-table">
+              <Link to="/gift-voucher-table" id="links">
                 <Card
                   className="card-stats"
                   inverse

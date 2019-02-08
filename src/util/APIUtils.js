@@ -42,15 +42,21 @@ export function getAllPolls(page, size) {
 
 export function createVoucherUrl(data) {
   return request({
-    url: API_BASE_URL2 + "/create",
+    url: API_BASE_URL + "/create",
     method: "POST",
     body: JSON.stringify(data)
   });
 }
-
+export function requestVoucher() {
+  return request({
+    url: API_BASE_URL + "/getall?Merchant=Enunwah",
+    method: "Get",
+    body: ""
+  });
+}
 export function requestVoucher(all) {
   return request({
-    url: API_BASE_URL2 + "/get" + all + "?Merchant=Enunwah",
+    url: API_BASE_URL + "/getall" + all + "?Merchant=Enunwah",
     method: "Get",
     body: ""
   });

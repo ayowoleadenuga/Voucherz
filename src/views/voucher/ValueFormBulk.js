@@ -67,8 +67,8 @@ class ValueBTextFields extends React.Component {
         label: "Numeric"
       },
       {
-        value: "Alpha-Numeric",
-        label: "Alpha-Numeric"
+        value: "Alphanumeric",
+        label: "Alphanumeric"
       },
       {
         value: "Alphabet",
@@ -125,8 +125,8 @@ class ValueBTextFields extends React.Component {
           label: "Numeric"
         },
         {
-          value: "Alpha-Numeric",
-          label: "Alpha-Numeric"
+          value: "Alphanumeric",
+          label: "Alphanumeric"
         },
         {
           value: "Alphabet",

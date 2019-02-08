@@ -82,8 +82,8 @@ class DiscountTextFields extends React.Component {
         label: "Numeric"
       },
       {
-        value: "Alpha-Numeric",
-        label: "Alpha-Numeric"
+        value: "Alphanumeric",
+        label: "Alphanumeric"
       },
       {
         value: "Alphabet",
@@ -154,8 +154,8 @@ class DiscountTextFields extends React.Component {
           label: "Numeric"
         },
         {
-          value: "Alpha-Numeric",
-          label: "Alpha-Numeric"
+          value: "Alphanumeric",
+          label: "Alphanumeric"
         },
         {
           value: "Alphabet",

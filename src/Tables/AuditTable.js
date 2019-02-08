@@ -6,11 +6,16 @@ import {
   CardTitle,
   Table,
   Row,
-  Col
+  Col,
+  InputGroup,
+  InputGroupText,
+  InputGroupAddon,
+  Input
 } from "reactstrap";
 
 import axios from "axios";
 import ScaleLoader from "react-spinners/ScaleLoader";
+import { CSVLink } from "react-csv";
 // import UserDialogDemo from "../views/Products/UserDialog";
 
 const override = {
@@ -23,11 +28,12 @@ class AuditTable extends React.Component {
   state = {
     audit: [],
     isLoading: true,
-    error: null
+    error: null,
+    search: ""
   };
   componentDidMount() {
     axios
-      .get("https://172.20.20.23:5001/getalldiscount?Merchant=Enunwah", {
+      .get("http://localhost:8079/api/log/audit/events", {
         responseType: "json"
       })
       .then(response => {
@@ -51,33 +57,90 @@ class AuditTable extends React.Component {
         })
       );
   }
+  changeHandler = e => {
+    let value = e.target.value;
+    this.setState({
+      ...this.state,
+      search: value
+    });
+  };
+  headers = [
+    { label: "Last Name", key: "lastName" },
+    { label: "Role", key: "role" },
+    { label: "Action", key: "Action" },
+    { label: "Date", key: "date" }
+  ];
+  data = this.state.audit.map(item => [
+    {
+      lastName: item.lastName,
+      role: item.role,
+      action: item.action,
+      date: item.date
+    }
+  ]);
   render() {
+    let audit = this.state.audit.filter(v => {
+      return (
+        v.code.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1
+      );
+    });
+    let i;
     return (
       <div className="content">
         <Row>
           <Col xs={12}>
             <Card>
               <CardHeader>
-                <CardTitle tag="h4">Users Table</CardTitle>
+                <CardTitle tag="h4">Audit Table</CardTitle>
               </CardHeader>
+              <Row>
+                <Col xs={{ size: 10, offset: 1 }}>
+                  <form>
+                    <InputGroup className="no-border">
+                      <Input
+                        name="search"
+                        value={this.state.search}
+                        placeholder="Search..."
+                        onChange={this.changeHandler}
+                      />
+                      <InputGroupAddon addonType="append">
+                        <InputGroupText>
+                          <i className="nc-icon nc-zoom-split" />
+                        </InputGroupText>
+                      </InputGroupAddon>
+                    </InputGroup>
+                  </form>
+                </Col>
+                <Col xs={{ size: 1 }}>
+                  <CSVLink data={this.data} headers={this.headers}>
+                    <i
+                      id="sharebtn"
+                      className="nc-icon nc-share-66 text-primary"
+                      onClick={this.handleShare}
+                    />
+                  </CSVLink>
+                </Col>
+              </Row>
               <CardBody>
                 {!this.state.isLoading ? (
                   <Table responsive>
                     <thead className="text-primary">
                       <tr>
+                        <th className="text-left">S/N</th>
                         <th className="text-left">Last-Name</th>
                         <th className="text-left">Role</th>
-                        <th className="text-left">Date</th>
                         <th className="text-left">Action</th>
+                        <th className="text-left">Date</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {this.state.user.map(item => (
-                        <tr key={item.user.lastName}>
-                          <td>{item.user.lastName}</td>
-                          <td>{item.user.role}</td>
-                          <td>{item.user.date}</td>
-                          <td>{item.action}</td>
+                      {audit.map(item => (
+                        <tr key={item.audit.lastName}>
+                          <td>{i++}</td>
+                          <td>{item.audit.lastName}</td>
+                          <td>{item.audit.role}</td>
+                          <td>{item.audit.action}</td>
+                          <td>{item.audit.date}</td>
                         </tr>
                       ))}
                     </tbody>

@@ -6,11 +6,16 @@ import {
   CardTitle,
   Table,
   Row,
-  Col
+  Col,
+  InputGroup,
+  InputGroupText,
+  InputGroupAddon,
+  Input
 } from "reactstrap";
 import { requestVoucher } from "../util/APIUtils";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import CustomizedDialogDemo from "../views/voucher/modal";
+import { CSVLink } from "react-csv";
 
 const override = {
   display: "block",
@@ -22,7 +27,8 @@ class GiftTable extends React.Component {
   state = {
     voucher: [],
     isLoading: true,
-    error: null
+    error: null,
+    search: ""
   };
   componentDidMount() {
     requestVoucher("allgift")
@@ -47,7 +53,37 @@ class GiftTable extends React.Component {
         })
       );
   }
+  changeHandler = e => {
+    let value = e.target.value;
+    this.setState({
+      search: value
+    });
+  };
+  headers = [
+    { label: "Voucher", key: "voucherCode" },
+    { label: "Campaign Name", key: "campaignName" },
+    { label: "Date Created", key: "dateCreated" },
+    { label: "Value", key: "value" },
+    { label: "Status", key: "status" },
+    { label: "Expiry Date", key: "expiryDate" }
+  ];
+  data = this.state.voucher.map(item => [
+    {
+      voucherCode: item.voucherCode,
+      campaignName: item.campaignName,
+      dateCreated: item.dateCreated,
+      value: item.value,
+      status: item.status,
+      expiryDate: item.expiryDate
+    }
+  ]);
   render() {
+    let voucher = this.state.voucher.filter(v => {
+      return (
+        v.code.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1
+      );
+    });
+    let i;
     return (
       <div className="content">
         <Row>
@@ -56,11 +92,40 @@ class GiftTable extends React.Component {
               <CardHeader>
                 <CardTitle tag="h4">Gift Voucher Table</CardTitle>
               </CardHeader>
+              <Row>
+                <Col xs={{ size: 10, offset: 1 }}>
+                  <form>
+                    <InputGroup className="no-border">
+                      <Input
+                        name="search"
+                        value={this.state.search}
+                        placeholder="Search..."
+                        onChange={this.changeHandler}
+                      />
+                      <InputGroupAddon addonType="append">
+                        <InputGroupText>
+                          <i className="nc-icon nc-zoom-split" />
+                        </InputGroupText>
+                      </InputGroupAddon>
+                    </InputGroup>
+                  </form>
+                </Col>
+                <Col xs={{ size: 1 }}>
+                  <CSVLink data={this.data} headers={this.headers}>
+                    <i
+                      id="sharebtn"
+                      className="nc-icon nc-share-66 text-primary"
+                      onClick={this.handleShare}
+                    />
+                  </CSVLink>
+                </Col>
+              </Row>
               <CardBody>
                 {!this.state.isLoading ? (
                   <Table responsive>
                     <thead className="text-primary">
                       <tr>
+                        <th className="text-left">S/N</th>
                         <th className="text-left">Voucher-Code</th>
                         <th className="text-left">Campaign-Name</th>
                         <th className="text-left">Value</th>
@@ -71,8 +136,9 @@ class GiftTable extends React.Component {
                       </tr>
                     </thead>
                     <tbody>
-                      {this.state.voucher.map(item => (
+                      {voucher.map(item => (
                         <tr key={item.voucherCode}>
+                          <td>{i++}</td>
                           <td>{item.voucherCode}</td>
                           <td>{item.campaignName}</td>
                           <td>{item.value}</td>

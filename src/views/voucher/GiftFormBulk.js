@@ -66,8 +66,8 @@ class GiftBTextFields extends React.Component {
         label: "Numeric"
       },
       {
-        value: "Alpha-Numeric",
-        label: "Alpha-Numeric"
+        value: "Alphanumeric",
+        label: "Alphanumeric"
       },
       {
         value: "Alphabet",
@@ -123,8 +123,8 @@ class GiftBTextFields extends React.Component {
           label: "Numeric"
         },
         {
-          value: "Alpha-Numeric",
-          label: "Alpha-Numeric"
+          value: "Alphanumeric",
+          label: "Alphanumeric"
         },
         {
           value: "Alphabet",

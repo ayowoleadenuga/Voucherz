@@ -12,7 +12,7 @@ import {
 import * as ROUTES from "../../routes/base";
 import dashRoutes from "../../routes/dashboard.jsx";
 import { ACCESS_TOKEN } from "../../constants/index.js";
-import { notification } from "antd";
+import { notification, Button } from "antd";
 
 class Header extends React.Component {
   constructor(props) {
@@ -121,48 +121,12 @@ class Header extends React.Component {
       description: description
     });
   }
+  handleClick = e => {
+    e.preventDefault();
+    this.props.history.push("/voucher");
+  };
   render() {
-    let formatAMPM = () => {
-      var d = new Date(),
-        minutes =
-          d.getMinutes().toString().length === 1
-            ? "0" + d.getMinutes()
-            : d.getMinutes(),
-        hours =
-          d.getHours().toString().length === 1
-            ? "0" + d.getHours()
-            : d.getHours(),
-        ampm = d.getHours() >= 12 ? "pm" : "am",
-        months = [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec"
-        ],
-        days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-      return (
-        days[d.getDay()] +
-        " " +
-        months[d.getMonth()] +
-        " " +
-        d.getDate() +
-        " " +
-        d.getFullYear() +
-        " " +
-        hours +
-        ":" +
-        minutes +
-        ampm
-      ).toString();
-    };
+    let time = new Date();
     return (
       // add or remove classes depending if we are on full-screen-maps page or not
       <Navbar
@@ -208,8 +172,17 @@ class Header extends React.Component {
             <Nav navbar>
               <NavItem className="nav-link btn-magnify">
                 <Link to="" className="nav-link btn-magnify">
-                  <p>{() => formatAMPM}</p>
+                  <p>{time.toLocaleString()}</p>
                 </Link>
+              </NavItem>
+              <NavItem className="nav-link btn-magnify">
+                <Button
+                  id="customButton"
+                  className="nav-link btn-magnify text-center text-primary text-header"
+                  onClick={this.handleClick}
+                >
+                  <i className="nc-icon nc-simple-add" /> Create Voucher
+                </Button>
               </NavItem>
               <NavItem className="nav-link btn-magnify">
                 <Link
@@ -218,9 +191,6 @@ class Header extends React.Component {
                   className="nav-link btn-rotate"
                 >
                   <i className="nc-icon nc-button-power" />
-                  <p>
-                    <span className="d-lg-none d-md-block">Account</span>
-                  </p>
                 </Link>
               </NavItem>
             </Nav>

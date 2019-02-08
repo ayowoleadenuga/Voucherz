@@ -290,7 +290,7 @@ Copyright (c) 2015 Daniel Eden
 .navbar .navbar-nav > a.btn {
   border-width: 2px;
   font-weight: 600;
-  font-size: 0.8571em;
+  font-size: 1em;
   line-height: 1.35em;
   text-transform: uppercase;
   border: none;
@@ -521,7 +521,9 @@ Copyright (c) 2015 Daniel Eden
       color: #34b5b8;
       text-decoration: none;
       box-shadow: none; }
-
+#customButton {
+  font-size: 24px !important;
+}
 .btn-success {
   background-color: #6bd098;
   color: #FFFFFF; }
@@ -1940,7 +1942,7 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
       padding: 5px 15px; }
   .navbar .navbar-nav .nav-link {
     text-transform: uppercase;
-    font-size: 0.7142em;
+    font-size: 1em;
     padding: 0.5rem 0.7rem;
     line-height: 1.625rem;
     margin-right: 3px; }

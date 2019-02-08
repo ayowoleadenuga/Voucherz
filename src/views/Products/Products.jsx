@@ -7,19 +7,44 @@ import UsersTable from "../../Tables/Users";
 // import TableExpansionPanels from "./TableExpansionPanels";
 
 class AdminConsole extends React.Component {
+  state = {
+    auditActive: true,
+    userActive: true
+  };
+  handleAudit = () => {
+    this.setState({
+      auditActive: false,
+      userActive: true
+    });
+  };
+  handleUser = () => {
+    this.setState({
+      auditActive: true,
+      userActive: false
+    });
+  };
   render() {
     return (
       <BrowserRouter>
         <div className="content">
           <Row>
             <Col xs={6}>
-              <Link to="/admin/audit-table">
-                <Card className="card-stats">
+              <Link to="/admin/audit-table" id="links">
+                <Card
+                  className="card-stats"
+                  inverse
+                  style={
+                    !this.state.auditActive
+                      ? { backgroundColor: "#333" }
+                      : { backgroundColor: "#fff" }
+                  }
+                  onClick={this.handleAudit}
+                >
                   <CardBody>
                     <Row>
                       <Col xs={5} md={4}>
                         <div className="icon-big text-center">
-                          <i className="nc-icon nc-credit-card text-primary" />
+                          <i className="nc-icon nc-watch-time text-primary" />
                         </div>
                       </Col>
                       <Col xs={7} md={8}>
@@ -33,13 +58,22 @@ class AdminConsole extends React.Component {
               </Link>
             </Col>
             <Col xs={6}>
-              <Link to="/admin/manage-users">
-                <Card className="card-stats">
+              <Link to="/admin/manage-users" id="links">
+                <Card
+                  className="card-stats"
+                  inverse
+                  style={
+                    !this.state.userActive
+                      ? { backgroundColor: "#333" }
+                      : { backgroundColor: "#fff" }
+                  }
+                  onClick={this.handleUser}
+                >
                   <CardBody>
                     <Row>
                       <Col xs={5} md={4}>
                         <div className="icon-big text-center">
-                          <i className="nc-icon nc-credit-card text-primary" />
+                          <i className="nc-icon nc-single-02 text-primary" />
                         </div>
                       </Col>
                       <Col xs={7} md={8}>
