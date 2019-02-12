@@ -1,8 +1,15 @@
-export const API_BASE_URL = "http://172.20.20.23:8079/api/voucher";
+export const API_BASE_URL = "http://192.168.43.184:8079/api/voucher";
 
-export const API_BASE_URL2 = "http://172.20.20.23:8079/api/user";
+export const API_BASE_URL2 = "http://192.168.43.184:8079/api/user";
+export const API_BASE_URL3 = "http://192.168.43.184:8079/api/log";
 //export const API_BASE_URL = '/api';
 export const ACCESS_TOKEN = "accessToken";
+export const CURRENT_USER = "currentUser";
+export const USER_LASTNAME = "userLastname";
+export const USER_FIRSTNAME = "firstName";
+export const EMAIL = "currentUser";
+export const USER_ROLE = "role";
+export const IS_ACTIVE = "isActive";
 
 export const NAME_MIN_LENGTH = 2;
 export const NAME_MAX_LENGTH = 40;
@@ -21,7 +28,4 @@ export const EMAIL_MAX_LENGTH = 40;
 export const PASSWORD_MIN_LENGTH = 6;
 export const PASSWORD_MAX_LENGTH = 20;
 
-export const POLL_LIST_SIZE = 30;
-export const MAX_CHOICES = 6;
-export const POLL_QUESTION_MAX_LENGTH = 140;
-export const POLL_CHOICE_MAX_LENGTH = 40;
+

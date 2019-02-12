@@ -23,7 +23,9 @@
     background-color: #0bf;
     border-color: #0bf;
 }
-
+#signuP {
+    margin-bottom: -10px !important;
+}
 .signup-form input {
     margin-bottom: 10px;
 }

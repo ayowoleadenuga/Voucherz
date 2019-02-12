@@ -13,7 +13,8 @@ import {
   Input
 } from "reactstrap";
 
-import axios from "axios";
+// import axios from "axios";
+import { requestEvent } from "../util/APIUtils";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import { CSVLink } from "react-csv";
 // import UserDialogDemo from "../views/Products/UserDialog";
@@ -32,22 +33,13 @@ class AuditTable extends React.Component {
     search: ""
   };
   componentDidMount() {
-    axios
-      .get("http://localhost:8079/api/log/audit/events", {
-        responseType: "json"
-      })
+    requestEvent()
       .then(response => {
-        const newUser = response.data;
-        let voucherDataArr = Object.keys(newUser).reduce((arr, e) => {
-          arr.push(newUser[e]);
-          return arr;
-        }, []);
+        console.log(response);
         this.setState({
-          voucher: voucherDataArr,
+          audit: response,
           isLoading: false
         });
-        // eslint-disable-next-line no-console
-        console.log(voucherDataArr);
       })
       .catch(error =>
         this.setState({
@@ -70,21 +62,23 @@ class AuditTable extends React.Component {
     { label: "Action", key: "Action" },
     { label: "Date", key: "date" }
   ];
-  data = this.state.audit.map(item => [
-    {
-      lastName: item.lastName,
-      role: item.role,
-      action: item.action,
-      date: item.date
-    }
-  ]);
+  data = this.state.audit.map(
+    item => [
+      {
+        lastName: item.id,
+        role: item.role,
+        action: item.description,
+        date: item.eventdate
+      }
+    ],
+    []
+  );
   render() {
-    let audit = this.state.audit.filter(v => {
-      return (
-        v.code.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1
-      );
-    });
-    let i;
+    console.log(this.state.audit);
+    // let audit = this.state.audit.filter(v => {
+    //   return v.eventdate.indexOf(this.state.search.toLowerCase()) !== -1;
+    // });
+    let i = 1;
     return (
       <div className="content">
         <Row>
@@ -127,20 +121,20 @@ class AuditTable extends React.Component {
                     <thead className="text-primary">
                       <tr>
                         <th className="text-left">S/N</th>
-                        <th className="text-left">Last-Name</th>
+                        <th className="text-left">ID</th>
                         <th className="text-left">Role</th>
                         <th className="text-left">Action</th>
                         <th className="text-left">Date</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {audit.map(item => (
-                        <tr key={item.audit.lastName}>
+                      {this.state.audit.map(item => (
+                        <tr key={item.id}>
                           <td>{i++}</td>
-                          <td>{item.audit.lastName}</td>
-                          <td>{item.audit.role}</td>
-                          <td>{item.audit.action}</td>
-                          <td>{item.audit.date}</td>
+                          <td>{item.email}</td>
+                          <td>{item.role}</td>
+                          <td>{item.event}</td>
+                          <td>{item.eventdate}</td>
                         </tr>
                       ))}
                     </tbody>

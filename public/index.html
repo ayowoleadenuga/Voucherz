@@ -9,7 +9,7 @@
             homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
         -->
         <link rel="manifest" href="%PUBLIC_URL%/manifest.json"/>
-        <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico"/>
+        <link rel="shortcut icon" href="%PUBLIC_URL%/favico.ico"/>
         <link rel="apple-touch-icon" sizes="76x76" href="%PUBLIC_URL%/apple-icon.png"/>
         <!--
             Notice the use of %PUBLIC_URL% in the tags above.
@@ -30,10 +30,28 @@
             #links {
                 text-decoration: none
             }
+            #welcome {
+                font-weight: bolder;
+            }
+            .italic {
+                font-style: italic;
+                font-size: 1.2em;
+            }
             #customButton {
                 font-size: 1em !important;
                 border: none;
                 cursor: pointer;
+                border-radius: 3px;
+                padding-bottom: 30px;
+            }
+            #morebtn{
+                border-color: #0bf;
+                color: #0bf;
+            }
+            #time {
+                font-size: 1.2em;
+                /* font-weight: ; */
+                margin-left: 1em;
             }
             #sharebtn {
                 font-size: 2.2em !important;

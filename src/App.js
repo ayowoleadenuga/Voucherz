@@ -1,17 +1,18 @@
 import React, { Component } from "react";
-import DashboardApp from "./DashboardApp";
 import { getCurrentUser } from "./util/APIUtils";
 import { ACCESS_TOKEN } from "./constants/index";
 import { Route, BrowserRouter, Switch } from "react-router-dom";
 import Login from "./user/login/Login";
 import Signup from "./user/signup/Signup";
+import DashboardApp from "./DashboardApp";
 import * as ROUTES from "./routes/base";
 import NotFound from "./common/NotFound";
 import PrivateRoute from "./common/PrivateRoute";
 import LoadingIndicator from "./common/LoadingIndicator";
 import ForgotPassword from "./user/forgotP";
 import { notification } from "antd";
-
+import Dashboard from "./views/Dashboard/Dashboard";
+// import dashRoutes from "./routes/dashboard";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -93,7 +94,7 @@ class App extends Component {
     return (
       <BrowserRouter>
         <Switch>
-          <Route exact path={ROUTES.LANDING} component={Login} />
+          {/* <Route exact path={ROUTES.LANDING} component={Login} /> */}
           <Route path={ROUTES.SIGN_IN} render={props => <Login {...props} />} />
           <Route path={ROUTES.SIGN_UP} component={Signup} />
           <Route path={ROUTES.FORGOT_P} component={ForgotPassword} />
@@ -102,6 +103,8 @@ class App extends Component {
             component={DashboardApp}
             handleLogout={this.handleLogout}
           />
+          <PrivateRoute path={ROUTES.LANDING} component={DashboardApp} />
+          <PrivateRoute path={ROUTES.DASHBOARD_ALL} component={Dashboard} />
           <Route component={NotFound} />
         </Switch>
       </BrowserRouter>

@@ -30,16 +30,17 @@ class VoucherTable extends React.Component {
     error: null,
     search: ""
   };
-  componentDidMount() {
-    // let all = "all";
+  componentDidMount = () => {
+    // console.log(requestVoucher());
     requestVoucher()
       .then(response => {
-        const newUser = response.data;
+        const newUser = response;
         let voucherDataArr = Object.keys(newUser).reduce((arr, e) => {
           arr.push(newUser[e]);
           return arr;
         }, []);
         this.setState({
+          ...this.state,
           voucher: voucherDataArr,
           isLoading: false
         });
@@ -53,10 +54,11 @@ class VoucherTable extends React.Component {
           isLoading: false
         })
       );
-  }
+  };
   changeHandler = e => {
     let value = e.target.value;
     this.setState({
+      ...this.state,
       search: value
     });
   };
@@ -79,10 +81,11 @@ class VoucherTable extends React.Component {
   render() {
     let voucher = this.state.voucher.filter(v => {
       return (
-        v.code.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1
+        v.voucherCode.toLowerCase().indexOf(this.state.search.toLowerCase()) !==
+        -1
       );
     });
-    let i;
+    let i = 1;
     return (
       <div className="content">
         <Row>

@@ -12,7 +12,7 @@ import {
   InputGroupAddon,
   Input
 } from "reactstrap";
-import { requestVoucher } from "../util/APIUtils";
+import { requestOtherVoucher } from "../util/APIUtils";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import CustomizedDialogDemo from "../views/voucher/modal";
 import { CSVLink } from "react-csv";
@@ -31,14 +31,16 @@ class GiftTable extends React.Component {
     search: ""
   };
   componentDidMount() {
-    requestVoucher("allgift")
+    let gift = "gift";
+    requestOtherVoucher(gift)
       .then(response => {
-        const newUser = response.data;
+        const newUser = response;
         let voucherDataArr = Object.keys(newUser).reduce((arr, e) => {
           arr.push(newUser[e]);
           return arr;
         }, []);
         this.setState({
+          ...this.state,
           voucher: voucherDataArr,
           isLoading: false
         });
@@ -80,10 +82,10 @@ class GiftTable extends React.Component {
   render() {
     let voucher = this.state.voucher.filter(v => {
       return (
-        v.code.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1
+        v.voucherCode.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1
       );
     });
-    let i;
+    let i = 1;
     return (
       <div className="content">
         <Row>

@@ -10,6 +10,8 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import PropTypes from "prop-types";
 import { notification } from "antd";
+import { activateUser } from "../../util/APIUtils";
+// import { USER_LASTNAME } from "../../constants";
 
 const DialogTitle = withStyles(theme => ({
   root: {
@@ -65,37 +67,29 @@ const DialogActions = withStyles(theme => ({
 class UserDialogDemo extends React.Component {
   state = {
     open: false,
-    disable: false
+    disable: this.props.active,
+    email: this.props.email
   };
 
   handleClickOpen = () => {
     this.setState({
+      ...this.state,
       open: true
     });
   };
   handleDisable = () => {
     let data = this.state.disable;
     if (data === false) {
-      let url =
-        "https://172.20.20.23:5001/disable/" +
-        this.props.title +
-        "?Merchant=Enunwah";
-      fetch(url, {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        }
-      })
+      activateUser(data, this.state.email)
         .then(response => {
           console.log(response);
           notification.success({
             message: "Voucherz",
-            description: `You have successfully your disabled user ${
+            description: `You have successfully your activated user ${
               this.props.lastName
             }`
           });
+          this.setState({ ...this.state, disable: true });
         })
         .catch(error => {
           console.error(
@@ -109,28 +103,18 @@ class UserDialogDemo extends React.Component {
               "Sorry! Something went wrong. Click the cancel button to clear the form and try again. Thank you!"
           });
         });
-      this.setState({ ...this.state, disable: true });
     } else {
-      let url =
-        "https://172.20.20.23:5001/enable/" +
-        this.props.title +
-        "?Merchant=Enunwah";
-      fetch(url, {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        }
-      })
+      activateUser(data, this.state.email)
         .then(response => {
           console.log(response);
           notification.success({
             message: "Voucherz",
-            description: `You have successfully your enabled the voucher ${
-              this.props.title
-            }`
+            description: `You have successfully your enabled the user ${
+              this.props.lastName
+            }
+           `
           });
+          this.setState({ ...this.state, disable: false });
         })
         .catch(error => {
           console.error(
@@ -144,7 +128,6 @@ class UserDialogDemo extends React.Component {
               "Sorry! Something went wrong. Please try again!"
           });
         });
-      this.setState({ ...this.state, disable: false });
     }
   };
 
@@ -156,6 +139,7 @@ class UserDialogDemo extends React.Component {
     return (
       <div>
         <Button
+          id="morebtn"
           variant="outlined"
           color="primary"
           onClick={this.handleClickOpen}
@@ -179,6 +163,7 @@ class UserDialogDemo extends React.Component {
               Last-Name: {this.props.lastName}
             </Typography>
             <Typography gutterBottom>Email: {this.props.email}</Typography>
+            <Typography gutterBottom>Active: {this.props.active}</Typography>
             <Typography gutterBottom>
               Date Created: {this.props.dateCreated}
             </Typography>
@@ -186,11 +171,12 @@ class UserDialogDemo extends React.Component {
           </DialogContent>
           <DialogActions>
             <Button
+              id="morebtn"
               onClick={this.handleDisable}
               color="primary"
               className="btnColor"
             >
-              {this.state.disable ? "Enable" : "Disable"}
+              {this.state.disable ? "Activate" : "Deactivate"}
             </Button>
           </DialogActions>
         </Dialog>
@@ -202,6 +188,7 @@ UserDialogDemo.propTypes = {
   firstName: PropTypes.string,
   lastName: PropTypes.string,
   email: PropTypes.string,
+  active: PropTypes.string,
   role: PropTypes.string,
   dateCreated: PropTypes.string
 };

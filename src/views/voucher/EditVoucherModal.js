@@ -11,7 +11,8 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import PropTypes, { any } from "prop-types";
 import { notification } from "antd";
-import * as ROUTES from "../../routes/base";
+// import * as ROUTES from "../../routes/base";
+import { updateVoucher } from "../../util/APIUtils";
 
 const DialogTitle = withStyles(theme => ({
   root: {
@@ -99,22 +100,20 @@ class EditDialogDemo extends React.Component {
   };
   handleFormSubmit = e => {
     e.preventDefault();
-    let updateData = { data: this.state.data };
-    fetch("https://172.20.20.23:5001/create", {
-      method: "POST",
-      body: JSON.stringify(updateData),
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      }
-    })
+    let updateData = this.state.data.expiryDate;
+    updateVoucher(this.props.title, updateData)
       .then(response => {
         console.log(response);
-        // let res = response;
-        notification.success({
-          message: "Voucherz",
-          description: "Thank you! You've successfully your voucher expiry date"
-        });
+        if (response.serviceResponse.responseCode === 202) {
+          notification.success({
+            message: "Voucherz",
+            description:
+              "Thank you! You've successfully updated your voucher's expiry date. Please reload the table to view new status."
+          });
+          this.setState({
+            open: false
+          });
+        }
       })
       .catch(error => {
         console.error(
@@ -129,7 +128,7 @@ class EditDialogDemo extends React.Component {
             "Sorry! Something went wrong. Click the cancel button to clear the form and try again. Thank you!"
         });
       });
-    this.props.history.push(ROUTES.Dashboard + "/all-voucher-table");
+    // this.props.history.push(ROUTES.Dashboard + "/all-voucher-table");
   };
 
   handleClose = () => {

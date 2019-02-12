@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import { createVoucherUrl } from "../../util/APIUtils";
 import { notification } from "antd";
+import { EMAIL } from "../../constants";
 // import axios from "axios";
 
 const styles = theme => ({
@@ -185,8 +186,24 @@ class DiscountTextFields extends React.Component {
       Campaign: this.state.vData.campaignName,
       Discount: {
         DiscountType: this.state.vData.discountType,
-        PercentOff: this.state.vData.amount,
-        AmountOff: this.state.vData.amount
+        PercentOff:
+          this.state.vData.discountType === "Amount" ||
+          this.state.vData.discountType === "Unit"
+            ? "0"
+            : this.state.vData.amount,
+        AmountOff:
+          this.state.vData.discountType === "Percentage" ||
+          this.state.vData.discountType === "Unit"
+            ? "0"
+            : this.state.vData.amount,
+        UnitOff: this.state.vData.discountUnit,
+        AmountLimit:
+          this.state.vData.discountType === "Unit"
+            ? "0"
+            : this.state.vData.amount
+      },
+      Redemption: {
+        RedemptionCount: 1
       },
       startDate: this.state.vData.startDate,
       expirationDate: this.state.vData.expiryDate,
@@ -196,20 +213,70 @@ class DiscountTextFields extends React.Component {
         Prefix: this.state.vData.prefix,
         Suffix: this.state.vData.suffix
       },
-      CreatedBy: "Wole",
+      CreatedBy: localStorage.getItem(EMAIL),
       VoucherCount: "1"
     };
     createVoucherUrl(discountData)
       .then(response => {
         console.log(response);
         let res = response;
-        if (res.status === 201 || res.status === 400) {
+        if (res.serviceResponse.responseCode === 201) {
           this.setState({ ...this.state, isLoading: false, modalShow: true });
+          notification.success({
+            message: "Voucherz",
+            description:
+              "Thank you! You've successfully created your vouchers. Proceed to the dashboard to view."
+          });
         }
-        notification.success({
-          message: "Voucherz",
-          description: "Thank you! You've successfully created your vouchers"
+        this.setState({
+          vData: {
+            campaignName: "",
+            discountType: "",
+            discountUnit: "",
+            amount: "",
+            quantity: "",
+            suffix: "",
+            prefix: "",
+            charSet: "",
+            voucherLength: "",
+            startDate: "",
+            expiryDate: ""
+          },
+          voucherType: "Discount",
+          discountTypes: [
+            {
+              value: "Percentage",
+              label: "Percentage"
+            },
+            {
+              value: "Amount",
+              label: "Amount"
+            },
+            {
+              value: "Unit",
+              label: "Unit"
+            }
+          ],
+          voucherCategory: "Bulk",
+          charSet: [
+            {
+              value: "Numeric",
+              label: "Numeric"
+            },
+            {
+              value: "Alphanumeric",
+              label: "Alphanumeric"
+            },
+            {
+              value: "Alphabet",
+              label: "Alphabet"
+            }
+          ],
+          disabled: true,
+          isLoading: false,
+          errorStatus: false
         });
+        // this.props.history.push("/dashboard");
       })
       .catch(error => {
         console.error(

@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import { createVoucherUrl } from "../../util/APIUtils";
 import { notification } from "antd";
+import { EMAIL } from "../../constants";
 
 const styles = theme => ({
   container: {
@@ -148,25 +149,61 @@ class GiftBTextFields extends React.Component {
       },
       startDate: this.state.vData.startDate,
       expirationDate: this.state.vData.expiryDate,
+      Redemption: {
+        RedemptionCount: 1
+      },
       MetaData: {
         Length: this.state.vData.voucherLength,
         Charset: this.state.vData.charSet,
         Prefix: this.state.vData.prefix,
         Suffix: this.state.vData.suffix
       },
-      CreatedBy: "Wole",
+      CreatedBy: localStorage.getItem(EMAIL),
       VoucherCount: this.state.vData.quantity
     };
     createVoucherUrl(giftData)
       .then(response => {
         console.log(response);
         let res = response;
-        if (res.status === 201) {
+        if (res.serviceResponse.responseCode === 201) {
           this.setState({ ...this.state, isLoading: false, modalShow: true });
+          notification.success({
+            message: "Voucherz",
+            description:
+              "Thank you! You've successfully created your voucher. Proceed to the dashboard to view."
+          });
         }
-        notification.success({
-          message: "Voucherz",
-          description: "Thank you! You've successfully created your vouchers"
+        this.setState({
+          vData: {
+            campaignName: "",
+            amount: "",
+            quantity: "",
+            suffix: "",
+            prefix: "",
+            charSet: "",
+            voucherLength: "",
+            startDate: "",
+            expiryDate: ""
+          },
+          voucherType: "Gift",
+          voucherCategory: "Bulk",
+          charSet: [
+            {
+              value: "Numeric",
+              label: "Numeric"
+            },
+            {
+              value: "Alphanumeric",
+              label: "Alphanumeric"
+            },
+            {
+              value: "Alphabet",
+              label: "Alphabet"
+            }
+          ],
+          disabled: true,
+          isLoading: false,
+          errorStatus: false
         });
       })
       .catch(error => {

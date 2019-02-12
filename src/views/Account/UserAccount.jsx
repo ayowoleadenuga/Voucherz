@@ -6,7 +6,7 @@ import TextField from "@material-ui/core/TextField";
 import { Grid } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import ScaleLoader from "react-spinners/ScaleLoader";
-import { createVoucherUrl } from "../../util/APIUtils";
+import { updateProfile } from "../../util/APIUtils";
 import { notification } from "antd";
 
 const styles = theme => ({
@@ -56,7 +56,8 @@ class UserAccountFields extends React.Component {
       address: "",
       phoneNumber: "",
       website: ""
-    }
+    },
+    isLoading: false
   };
   handleChangeText = e => {
     let value = e.target.value;
@@ -119,17 +120,30 @@ class UserAccountFields extends React.Component {
       phoneNumber: this.state.vData.phoneNumber,
       website: this.state.vData.website
     };
-    createVoucherUrl(discountData)
+    updateProfile(discountData)
       .then(response => {
         console.log(response);
         let res = response;
-        if (res.status === 201 || res.status === 400) {
-          this.setState({ ...this.state, isLoading: false, modalShow: true });
+        if (res.code === 200) {
+          this.setState({ ...this.state, isLoading: false, modalShow: true }); 
         }
         notification.success({
           message: "Voucherz",
           description:
-            "Thank you! You've successfully edited your account profile"
+            "Thank you! You've successfully updated your account profile"
+        });
+        this.setState({
+          vData: {
+            firstName: "",
+            lastName: "",
+            companyName: "",
+            staffStrength: "",
+            email: "",
+            address: "",
+            phoneNumber: "",
+            website: ""
+          },
+          isLoading: false
         });
       })
       .catch(error => {

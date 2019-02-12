@@ -11,8 +11,17 @@ import {
 } from "reactstrap";
 import * as ROUTES from "../../routes/base";
 import dashRoutes from "../../routes/dashboard.jsx";
-import { ACCESS_TOKEN } from "../../constants/index.js";
+import {
+  ACCESS_TOKEN,
+  USER_LASTNAME,
+  CURRENT_USER,
+  EMAIL,
+  USER_ROLE,
+  USER_FIRSTNAME,
+  IS_ACTIVE
+} from "../../constants/index.js";
 import { notification, Button } from "antd";
+import { formatDateTime } from "../../util/Helpers";
 
 class Header extends React.Component {
   constructor(props) {
@@ -102,11 +111,17 @@ class Header extends React.Component {
     }
   }
   handleLogout(
-    redirectTo = "/",
+    // redirectTo = "/",
     notificationType = "success",
     description = "You're successfully logged out."
   ) {
     localStorage.removeItem(ACCESS_TOKEN);
+    localStorage.removeItem(CURRENT_USER);
+    localStorage.removeItem(EMAIL);
+    localStorage.removeItem(USER_ROLE);
+    localStorage.removeItem(IS_ACTIVE);
+    localStorage.removeItem(USER_LASTNAME);
+    localStorage.removeItem(USER_FIRSTNAME);
 
     this.setState({
       currentUser: null,
@@ -115,7 +130,7 @@ class Header extends React.Component {
 
     // eslint-disable-next-line react/prop-types
     this.location.reload();
-    this.props.history.push(redirectTo);
+    // this.props.history.push(redirectTo);
     notification[notificationType]({
       message: "Voucherz",
       description: description
@@ -125,6 +140,9 @@ class Header extends React.Component {
     e.preventDefault();
     this.props.history.push("/voucher");
   };
+  // currentUserFirstname = localStorage.getItem(USER_FIRSTNAME);
+  currentUserLastname = localStorage.getItem(USER_LASTNAME);
+  username = this.currentUserLastname;
   render() {
     let time = new Date();
     return (
@@ -172,7 +190,11 @@ class Header extends React.Component {
             <Nav navbar>
               <NavItem className="nav-link btn-magnify">
                 <Link to="" className="nav-link btn-magnify">
-                  <p>{time.toLocaleString()}</p>
+                  <p>
+                    <span id="welcome">
+                      <i className="nc-icon nc-single-02" /> {this.username}{" "}
+                    </span>
+                  </p>
                 </Link>
               </NavItem>
               <NavItem className="nav-link btn-magnify">
@@ -183,6 +205,14 @@ class Header extends React.Component {
                 >
                   <i className="nc-icon nc-simple-add" /> Create Voucher
                 </Button>
+              </NavItem>
+              <NavItem className="nav-link btn-magnify">
+                <Link to="" className="nav-link btn-magnify">
+                  <p>
+                    {/* <span id="time">{time.toLocaleString()}</span> */}
+                    <span id="time">{formatDateTime(time)}</span>
+                  </p>
+                </Link>
               </NavItem>
               <NavItem className="nav-link btn-magnify">
                 <Link

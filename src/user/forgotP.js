@@ -5,16 +5,23 @@ import { Form, Input, Button, notification } from "antd";
 import { forgotPassword, checkEmailAvailability } from "../util/APIUtils";
 import { Link } from "react-router-dom";
 import { EMAIL_MAX_LENGTH } from "../constants";
+import { ScaleLoader } from "react-spinners";
+import logo from "../components/Sidebar/logo.svg";
 
 const FormItem = Form.Item;
-
+const override = {
+  display: "block",
+  margin: "50px 45%",
+  borderColor: "red"
+};
 class ForgotPassword extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: {
         value: ""
-      }
+      },
+      isLoading: false
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -33,9 +40,8 @@ class ForgotPassword extends Component {
   }
   handleSubmit(event) {
     event.preventDefault();
-    const forgotPasswordRequest = {
-      email: this.state.email.value
-    };
+    this.setState({ isLoading: true });
+    const forgotPasswordRequest = { email: this.state.email.value };
     forgotPassword(forgotPasswordRequest)
       .then(response => {
         if (response.status === 202 || response.status === 201) {
@@ -43,6 +49,7 @@ class ForgotPassword extends Component {
             message: "Voucherz",
             description: "Thank you! A link has been sent to your mail!"
           });
+          this.setState({ isLoading: false });
           // eslint-disable-next-line react/prop-types
           this.props.history.push("/login");
         }
@@ -54,6 +61,7 @@ class ForgotPassword extends Component {
             error.message || "Sorry! Something went wrong. Please try again!"
         });
       });
+    this.setState({ isLoading: false });
   }
 
   isFormInvalid() {
@@ -62,42 +70,51 @@ class ForgotPassword extends Component {
   render() {
     return (
       <div className="forgot-container">
-        <h1>VOUCHERZ</h1>
+        <img src={logo} alt="react-logo" />
         <h2 className="page-title">Forgot Password?</h2>
         <div className="signup-content">
-          <Form onSubmit={this.handleSubmit} className="signup-form">
-            <FormItem
-              label="Email"
-              hasFeedback
-              validateStatus={this.state.email.validateStatus}
-              help={this.state.email.errorMsg}
-            >
-              <Input
-                size="large"
-                name="email"
-                type="email"
-                autoComplete="off"
-                placeholder="Your email"
-                value={this.state.email.value}
-                onBlur={this.validateEmailAvailability}
-                onChange={event =>
-                  this.handleInputChange(event, this.validateEmail)
-                }
-              />
-            </FormItem>
-            <FormItem>
-              <Button
-                type="primary"
-                htmlType="submit"
-                size="large"
-                className="signup-form-button"
-                disabled={this.isFormInvalid()}
+          {!this.state.isLoading ? (
+            <Form onSubmit={this.handleSubmit} className="signup-form">
+              <FormItem
+                label="Email"
+                hasFeedback
+                validateStatus={this.state.email.validateStatus}
+                help={this.state.email.errorMsg}
               >
-                Submit
-              </Button>
-              Back to <Link to="/login">Login Page</Link>
-            </FormItem>
-          </Form>
+                <Input
+                  size="large"
+                  name="email"
+                  type="email"
+                  autoComplete="off"
+                  placeholder="Your email"
+                  value={this.state.email.value}
+                  onBlur={this.validateEmailAvailability}
+                  onChange={event =>
+                    this.handleInputChange(event, this.validateEmail)
+                  }
+                />
+              </FormItem>
+              <FormItem>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  size="large"
+                  className="signup-form-button"
+                  disabled={this.isFormInvalid()}
+                >
+                  Submit
+                </Button>
+                Back to <Link to="/login">Login Page</Link>
+              </FormItem>
+            </Form>
+          ) : (
+            <ScaleLoader
+              css={override}
+              color={"#0bf"}
+              size={300}
+              sizeUnit={"px"}
+            />
+          )}
         </div>
       </div>
     );

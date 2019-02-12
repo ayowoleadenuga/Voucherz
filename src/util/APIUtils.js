@@ -1,10 +1,13 @@
 import {
   API_BASE_URL,
   API_BASE_URL2,
-  POLL_LIST_SIZE,
-  ACCESS_TOKEN
+  ACCESS_TOKEN,
+  // EMAIL,
+  API_BASE_URL3
+  // CURRENT_USER
 } from "../constants";
 
+const email = localStorage.getItem("currentUser");
 const request = options => {
   const headers = new Headers({
     "Content-Type": "application/json"
@@ -30,35 +33,63 @@ const request = options => {
   );
 };
 
-export function getAllPolls(page, size) {
-  page = page || 0;
-  size = size || POLL_LIST_SIZE;
-
-  return request({
-    url: API_BASE_URL + "/polls?page=" + page + "&size=" + size,
-    method: "GET"
-  });
-}
-
 export function createVoucherUrl(data) {
+  console.log(JSON.stringify(data));
   return request({
     url: API_BASE_URL + "/create",
     method: "POST",
     body: JSON.stringify(data)
   });
 }
-export function requestVoucher() {
+export function updateProfile(data) {
+  console.log(JSON.stringify(data));
   return request({
-    url: API_BASE_URL + "/getall?Merchant=Enunwah",
-    method: "Get",
-    body: ""
+    url: API_BASE_URL2 + "/auth/update/" + email,
+    method: "PATCH",
+    body: JSON.stringify(data)
   });
 }
-export function requestVoucher(all) {
+export function updateVoucher(voucher, date) {
   return request({
-    url: API_BASE_URL + "/getall" + all + "?Merchant=Enunwah",
-    method: "Get",
-    body: ""
+    url:
+      API_BASE_URL +
+      "/update/" +
+      voucher +
+      "?Merchant=" +
+      email +
+      "&ExpirationDate=" +
+      date,
+    method: "PUT"
+  });
+}
+export function requestVoucher() {
+  return request({
+    url: API_BASE_URL + "/getall?Merchant=" + email,
+    method: "Get"
+  });
+}
+export function requestUsers() {
+  return request({
+    url: API_BASE_URL2 + "/auth/users?name",
+    method: "Get"
+  });
+}
+export function requestOtherVoucher(all) {
+  return request({
+    url: API_BASE_URL + "/getall" + all + "?Merchant=" + email,
+    method: "Get"
+  });
+}
+export function activateUser(bool, email) {
+  return request({
+    url: API_BASE_URL2 + "/auth/status?active=" + bool + "&email=" + email,
+    method: "Patch"
+  });
+}
+export function requestEvent() {
+  return request({
+    url: API_BASE_URL3 + "/audit/events",
+    method: "Get"
   });
 }
 
@@ -80,9 +111,8 @@ export function signup(signupRequest) {
 
 export function updateDisable(data, func) {
   return request({
-    url: API_BASE_URL2 + "/" + func,
-    method: "POST",
-    body: JSON.stringify(data)
+    url: API_BASE_URL + "/" + func + "/" + data + "?Merchant=" + email,
+    method: "POST"
   });
 }
 

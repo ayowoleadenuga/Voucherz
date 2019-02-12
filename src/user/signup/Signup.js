@@ -16,9 +16,15 @@ import {
   PASSWORD_MAX_LENGTH
 } from "../../constants";
 import { Form, Input, Button, notification } from "antd";
+import { ScaleLoader } from "react-spinners";
+import logo from "../../components/Sidebar/logo.svg";
 
 const FormItem = Form.Item;
-
+const override = {
+  display: "block",
+  margin: "50px 45%",
+  borderColor: "red"
+};
 class Signup extends Component {
   constructor(props) {
     super(props);
@@ -43,7 +49,8 @@ class Signup extends Component {
       },
       confirmPassword: {
         value: ""
-      }
+      },
+      isLoading: false
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -99,8 +106,10 @@ class Signup extends Component {
       lastName: this.state.lastname.value,
       password: this.state.password.value
     };
+    this.setState({ ...this.state, isLoading: true });
     signup(signupRequest)
       .then(response => {
+        this.setState({ ...this.state, isLoading: false });
         notification.success({
           message: "Voucherz",
           description:
@@ -131,151 +140,167 @@ class Signup extends Component {
   render() {
     return (
       <div className="signup-container">
-        <h1>VOUCHERZ</h1>
+        <img src={logo} alt="react-logo" />
         <h2 className="page-title">Sign Up</h2>
-        <div className="signup-content">
-          <Form onSubmit={this.handleSubmit} className="signup-form">
-            <FormItem
-              label="First Name"
-              validateStatus={this.state.name.validateStatus}
-              help={this.state.name.errorMsg}
-            >
-              <Input
-                size="large"
-                name="name"
-                autoComplete="off"
-                placeholder="First name"
-                value={this.state.name.value}
-                onChange={event =>
-                  this.handleInputChange(event, this.validateName)
-                }
-              />
-            </FormItem>
-            <FormItem
-              label="Last Name"
-              hasFeedback
-              validateStatus={this.state.lastname.validateStatus}
-              help={this.state.lastname.errorMsg}
-            >
-              <Input
-                size="large"
-                name="lastname"
-                autoComplete="off"
-                placeholder="Last Name"
-                value={this.state.lastname.value}
-                onChange={event => {
-                  return this.handleInputChange(event, this.validatelastname);
-                }}
-              />
-            </FormItem>
-            <FormItem
-              label="Company Size"
-              hasFeedback
-              validateStatus={this.state.companySize.validateStatus}
-              help={this.state.companySize.errorMsg}
-            >
-              <Input
-                size="large"
-                type="number"
-                name="companySize"
-                autoComplete="off"
-                placeholder="Company Size"
-                value={this.state.companySize.value}
-                onChange={event => {
-                  return this.handleChange(event, this.validateCompanySize);
-                }}
-              />
-            </FormItem>
-            <FormItem
-              label="Phone Number"
-              hasFeedback
-              validateStatus={this.state.phoneNumber.validateStatus}
-              help={this.state.phoneNumber.errorMsg}
-            >
-              <Input
-                size="large"
-                type="number"
-                name="phoneNumber"
-                autoComplete="off"
-                placeholder="Phone Number"
-                value={this.state.phoneNumber.value}
-                onChange={event => {
-                  return this.handlePhoneNumberChange(
-                    event,
-                    this.validatePhoneNumber
-                  );
-                }}
-              />
-            </FormItem>
-            <FormItem
-              label="Email"
-              hasFeedback
-              validateStatus={this.state.email.validateStatus}
-              help={this.state.email.errorMsg}
-            >
-              <Input
-                size="large"
-                name="email"
-                type="email"
-                autoComplete="off"
-                placeholder="Your email"
-                value={this.state.email.value}
-                onBlur={this.validateEmailAvailability}
-                onChange={event =>
-                  this.handleInputChange(event, this.validateEmail)
-                }
-              />
-            </FormItem>
-            <FormItem
-              label="Password"
-              hasFeedback
-              validateStatus={this.state.password.validateStatus}
-              help={this.state.password.errorMsg}
-            >
-              <Input
-                size="large"
-                name="password"
-                type="password"
-                autoComplete="off"
-                placeholder="A password between 6 to 20 characters"
-                value={this.state.password.value}
-                onChange={event =>
-                  this.handleInputChange(event, this.validatePassword)
-                }
-              />
-            </FormItem>
-            <FormItem
-              label=" Confirm Password"
-              hasFeedback
-              validateStatus={this.state.confirmPassword.validateStatus}
-              help={this.state.confirmPassword.errorMsg}
-            >
-              <Input
-                size="large"
-                name="confirmPassword"
-                type="password"
-                autoComplete="off"
-                placeholder="Confirm Password"
-                value={this.state.confirmPassword.value}
-                onChange={event =>
-                  this.handleInputChange(event, this.validateConfPassword)
-                }
-              />
-            </FormItem>
-            <FormItem>
-              <Button
-                type="primary"
-                htmlType="submit"
-                size="large"
-                className="signup-form-button"
-                disabled={this.isFormInvalid()}
+        {!this.state.isLoading ? (
+          <div className="signup-content">
+            <Form onSubmit={this.handleSubmit} className="signup-form">
+              <FormItem
+                label="First Name"
+                validateStatus={this.state.name.validateStatus}
+                help={this.state.name.errorMsg}
               >
-                Sign Up
-              </Button>
-              Already registed? <Link to="/login">Login now!</Link>
-            </FormItem>
-          </Form>
-        </div>
+                <Input
+                  id="signuP"
+                  size="large"
+                  name="name"
+                  autoComplete="off"
+                  placeholder="First name"
+                  value={this.state.name.value}
+                  onChange={event =>
+                    this.handleInputChange(event, this.validateName)
+                  }
+                />
+              </FormItem>
+              <FormItem
+                label="Last Name"
+                hasFeedback
+                validateStatus={this.state.lastname.validateStatus}
+                help={this.state.lastname.errorMsg}
+              >
+                <Input
+                  id="signuP"
+                  size="large"
+                  name="lastname"
+                  autoComplete="off"
+                  placeholder="Last Name"
+                  value={this.state.lastname.value}
+                  onChange={event => {
+                    return this.handleInputChange(event, this.validatelastname);
+                  }}
+                />
+              </FormItem>
+              <FormItem
+                label="Company Size"
+                hasFeedback
+                validateStatus={this.state.companySize.validateStatus}
+                help={this.state.companySize.errorMsg}
+              >
+                <Input
+                  id="signuP"
+                  size="large"
+                  type="number"
+                  name="companySize"
+                  autoComplete="off"
+                  placeholder="Company Size"
+                  value={this.state.companySize.value}
+                  onChange={event => {
+                    return this.handleChange(event, this.validateCompanySize);
+                  }}
+                />
+              </FormItem>
+              <FormItem
+                label="Phone Number"
+                hasFeedback
+                validateStatus={this.state.phoneNumber.validateStatus}
+                help={this.state.phoneNumber.errorMsg}
+              >
+                <Input
+                  id="signuP"
+                  size="large"
+                  type="number"
+                  name="phoneNumber"
+                  autoComplete="off"
+                  placeholder="Phone Number"
+                  value={this.state.phoneNumber.value}
+                  onChange={event => {
+                    return this.handlePhoneNumberChange(
+                      event,
+                      this.validatePhoneNumber
+                    );
+                  }}
+                />
+              </FormItem>
+              <FormItem
+                label="Email"
+                hasFeedback
+                validateStatus={this.state.email.validateStatus}
+                help={this.state.email.errorMsg}
+              >
+                <Input
+                  id="signuP"
+                  size="large"
+                  name="email"
+                  type="email"
+                  autoComplete="off"
+                  placeholder="Your email"
+                  value={this.state.email.value}
+                  onBlur={this.validateEmailAvailability}
+                  onChange={event =>
+                    this.handleInputChange(event, this.validateEmail)
+                  }
+                />
+              </FormItem>
+              <FormItem
+                label="Password"
+                hasFeedback
+                validateStatus={this.state.password.validateStatus}
+                help={this.state.password.errorMsg}
+              >
+                <Input
+                  id="signuP"
+                  size="large"
+                  name="password"
+                  type="password"
+                  autoComplete="off"
+                  placeholder="A password between 6 to 20 characters"
+                  value={this.state.password.value}
+                  onChange={event =>
+                    this.handleInputChange(event, this.validatePassword)
+                  }
+                />
+              </FormItem>
+              <FormItem
+                label=" Confirm Password"
+                hasFeedback
+                validateStatus={this.state.confirmPassword.validateStatus}
+                help={this.state.confirmPassword.errorMsg}
+              >
+                <Input
+                  id="signuP"
+                  size="large"
+                  name="confirmPassword"
+                  type="password"
+                  autoComplete="off"
+                  placeholder="Confirm Password"
+                  value={this.state.confirmPassword.value}
+                  onChange={event =>
+                    this.handleInputChange(event, this.validateConfPassword)
+                  }
+                />
+              </FormItem>
+              <FormItem>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  size="large"
+                  className="signup-form-button"
+                  disabled={this.isFormInvalid()}
+                >
+                  Sign Up
+                </Button>
+                Already registed? <Link to="/login">Login now!</Link>
+              </FormItem>
+            </Form>
+          </div>
+        ) : (
+          <ScaleLoader
+            css={override}
+            color={"#0bf"}
+            size={300}
+            sizeUnit={"px"}
+          />
+        )}
       </div>
     );
   }
@@ -465,7 +490,7 @@ class Signup extends Component {
     }
   };
   validateConfPassword = password => {
-    if (password === this.state.password) {
+    if (password !== this.state.password.value) {
       return {
         validateStatus: "error",
         errorMsg: `Password and Confirm Password should be the same.)`

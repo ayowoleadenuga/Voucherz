@@ -13,6 +13,11 @@ import EditDialogDemo from "./EditVoucherModal";
 import { notification } from "antd";
 import { updateDisable } from "../../util/APIUtils";
 
+notification.config({
+  placement: "bottomRight",
+  bottom: 200,
+  duration: 0
+});
 const DialogTitle = withStyles(theme => ({
   root: {
     borderBottom: `1px solid ${theme.palette.divider}`,
@@ -67,7 +72,7 @@ const DialogActions = withStyles(theme => ({
 class CustomizedDialogDemo extends React.Component {
   state = {
     open: false,
-    disable: false
+    disable: this.props.status
   };
 
   handleClickOpen = () => {
@@ -75,42 +80,39 @@ class CustomizedDialogDemo extends React.Component {
       open: true
     });
   };
+  closeD = () => {
+    this.setState({
+      open: false
+    });
+  };
   handleDisable = () => {
-    let data = this.state.disable;
-    if (data === false) {
-      updateDisable(data, "disable")
-        .then(response => {
-          console.log(response);
+    let data = this.props.title;
+    if (this.state.disable === "Active") {
+      updateDisable(data, "disable").then(response => {
+        console.log(response);
+        if (response.serviceResponse.responseCode === 200) {
           notification.success({
             message: "Voucherz",
-            description: `You have successfully your disabled the voucher ${
+            description: `You have successfully disabled voucher ${
               this.props.title
-            }`
+            } Refresh the table to view the new status.`
           });
-        })
-        .catch(error => {
-          console.error(
-            "Error:",
-            error || "Error tryin to disable. Please try again. Thank you!"
-          );
-          notification.error({
-            message: "Voucherz",
-            description:
-              "Your request cannot be made at this time as the server is currently unreachable. Click the cancel button to clear the form and try again. Thank you! " ||
-              "Sorry! Something went wrong. Click the cancel button to clear the form and try again. Thank you!"
-          });
-        });
-      this.setState({ ...this.state, disable: true });
+          this.setState({ open: false, disable: "Inactive" });
+        }
+      });
     } else {
       updateDisable(data, "enable")
         .then(response => {
           console.log(response);
-          notification.success({
-            message: "Voucherz",
-            description: `You have successfully your enabled the voucher ${
-              this.props.title
-            }`
-          });
+          if (response.serviceResponse.responseCode === 200) {
+            notification.success({
+              message: "Voucherz",
+              description: `You have successfully enabled voucher ${
+                this.props.title
+              } Refresh the table to view the new status.`
+            });
+            this.setState({ open: false, disable: "Active" });
+          }
         })
         .catch(error => {
           console.error(
@@ -124,7 +126,6 @@ class CustomizedDialogDemo extends React.Component {
               "Sorry! Something went wrong. Please try again!"
           });
         });
-      this.setState({ ...this.state, disable: false });
     }
   };
 
@@ -136,6 +137,7 @@ class CustomizedDialogDemo extends React.Component {
     return (
       <div>
         <Button
+          id="morebtn"
           variant="outlined"
           color="primary"
           onClick={this.handleClickOpen}
@@ -173,6 +175,7 @@ class CustomizedDialogDemo extends React.Component {
           </DialogContent>
           <DialogActions>
             <EditDialogDemo
+              onClick={this.closeD}
               voucherCode={this.props.voucherCode}
               voucherType={this.props.voucherType}
               value={this.props.value}
@@ -187,7 +190,7 @@ class CustomizedDialogDemo extends React.Component {
               color="primary"
               className="btnColor"
             >
-              {this.state.disable ? "Enable" : "Disable"}
+              {this.state.disable === "Active" ? "Disable" : "Enable"}
             </Button>
           </DialogActions>
         </Dialog>

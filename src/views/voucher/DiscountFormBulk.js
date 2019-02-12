@@ -6,8 +6,10 @@ import TextField from "@material-ui/core/TextField";
 import { Grid } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import ScaleLoader from "react-spinners/ScaleLoader";
-// import { createVoucherUrl } from "../../util/APIUtils";
+import { createVoucherUrl } from "../../util/APIUtils";
 import { notification } from "antd";
+import { EMAIL } from "../../constants";
+// import dashRoutes from "../../routes/dashboard";
 
 const styles = theme => ({
   container: {
@@ -46,54 +48,58 @@ notification.config({
 });
 
 class DiscountBTextFields extends React.Component {
-  state = {
-    vData: {
-      campaignName: "",
-      discountType: "",
-      discountUnit: "",
-      quantity: "",
-      amount: "",
-      suffix: "",
-      prefix: "",
-      charSet: "",
-      voucherLength: "",
-      startDate: "",
-      expiryDate: ""
-    },
-    voucherType: "Discount",
-    discountTypes: [
-      {
-        value: "Percentage",
-        label: "Percentage"
+  constructor(props) {
+    super(props);
+    this.state = {
+      vData: {
+        campaignName: "",
+        discountType: "",
+        discountUnit: "",
+        quantity: "",
+        amount: "",
+        suffix: "",
+        prefix: "",
+        charSet: "",
+        voucherLength: "",
+        startDate: "",
+        expiryDate: ""
       },
-      {
-        value: "Amount",
-        label: "Amount"
-      },
-      {
-        value: "Unit",
-        label: "Unit"
-      }
-    ],
-    voucherCategory: "Bulk",
-    charSet: [
-      {
-        value: "Numeric",
-        label: "Numeric"
-      },
-      {
-        value: "Alphanumeric",
-        label: "Alphanumeric"
-      },
-      {
-        value: "Alphabet",
-        label: "Alphabet"
-      }
-    ],
-    disabled: true,
-    isLoading: false,
-    errorStatus: null
-  };
+      voucherType: "Discount",
+      discountTypes: [
+        {
+          value: "Percentage",
+          label: "Percentage"
+        },
+        {
+          value: "Amount",
+          label: "Amount"
+        },
+        {
+          value: "Unit",
+          label: "Unit"
+        }
+      ],
+      voucherCategory: "Bulk",
+      charSet: [
+        {
+          value: "Numeric",
+          label: "Numeric"
+        },
+        {
+          value: "Alphanumeric",
+          label: "Alphanumeric"
+        },
+        {
+          value: "Alphabet",
+          label: "Alphabet"
+        }
+      ],
+      disabled: true,
+      isLoading: false,
+      errorStatus: null
+    };
+  }
+
   handleChangeText = e => {
     let value = e.target.value;
     let name = e.target.name;
@@ -178,6 +184,7 @@ class DiscountBTextFields extends React.Component {
       }
     }));
   };
+
   handleFormSubmit = e => {
     e.preventDefault();
     this.setState({ ...this.state, isLoading: true });
@@ -186,8 +193,24 @@ class DiscountBTextFields extends React.Component {
       Campaign: this.state.vData.campaignName,
       Discount: {
         DiscountType: this.state.vData.discountType,
-        PercentOff: this.state.vData.amount,
-        AmountOff: this.state.vData.amount
+        PercentOff:
+          this.state.vData.discountType === "Amount" ||
+          this.state.vData.discountType === "Unit"
+            ? 0
+            : this.state.vData.amount,
+        AmountOff:
+          this.state.vData.discountType === "Percentage" ||
+          this.state.vData.discountType === "Unit"
+            ? 0
+            : this.state.vData.amount,
+        UnitOff: this.state.vData.discountUnit,
+        AmountLimit:
+          this.state.vData.discountType === "Unit"
+            ? "0"
+            : this.state.vData.amount
+      },
+      Redemption: {
+        RedemptionCount: 1
       },
       startDate: this.state.vData.startDate,
       expirationDate: this.state.vData.expiryDate,
@@ -197,28 +220,70 @@ class DiscountBTextFields extends React.Component {
         Prefix: this.state.vData.prefix,
         Suffix: this.state.vData.suffix
       },
-      CreatedBy: "Wole",
+      CreatedBy: localStorage.getItem(EMAIL),
       VoucherCount: this.state.vData.quantity
     };
-    // createVoucherUrl(discountData)
-    fetch("https://172.20.20.23:5001/create", {
-      method: "POST",
-      body: JSON.stringify(discountData),
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      }
-    })
+    createVoucherUrl(discountData)
       .then(response => {
         console.log(response);
         let res = response;
-        if (res.status === 201 || res.status === 400) {
+        if (res.serviceResponse.responseCode === 201) {
           this.setState({ ...this.state, isLoading: false, modalShow: true });
+          notification.success({
+            message: "Voucherz",
+            description:
+              "Thank you! You've successfully created your vouchers. Proceed to the dashboard to view."
+          });
         }
-        notification.success({
-          message: "Voucherz",
-          description: "Thank you! You've successfully created your vouchers"
+        this.setState({
+          vData: {
+            campaignName: "",
+            discountType: "",
+            discountUnit: "",
+            amount: "",
+            quantity: "",
+            suffix: "",
+            prefix: "",
+            charSet: "",
+            voucherLength: "",
+            startDate: "",
+            expiryDate: ""
+          },
+          voucherType: "Discount",
+          discountTypes: [
+            {
+              value: "Percentage",
+              label: "Percentage"
+            },
+            {
+              value: "Amount",
+              label: "Amount"
+            },
+            {
+              value: "Unit",
+              label: "Unit"
+            }
+          ],
+          voucherCategory: "Bulk",
+          charSet: [
+            {
+              value: "Numeric",
+              label: "Numeric"
+            },
+            {
+              value: "Alphanumeric",
+              label: "Alphanumeric"
+            },
+            {
+              value: "Alphabet",
+              label: "Alphabet"
+            }
+          ],
+          disabled: true,
+          isLoading: false,
+          errorStatus: false
         });
+        // this.props.history.push("/dashboard");
       })
       .catch(error => {
         console.error(
@@ -238,7 +303,6 @@ class DiscountBTextFields extends React.Component {
             "Sorry! Something went wrong. Click the cancel button to clear the form and try again. Thank you!"
         });
         console.log(discountData);
-        this.props.history.push("/dashboard/discount-voucher-table");
       });
   };
   render() {
